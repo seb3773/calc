@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=calc
+GenericName=Scientific Calculator
+Exec=/usr/local/bin/calc
+Icon=calc
+Terminal=false
+Type=Application
+X-TDE-StartupNotify=true
+Categories=Qt;TDE;Utility;X-TDE-Utilities-Desktop;

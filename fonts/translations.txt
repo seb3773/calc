@@ -1,0 +1,216 @@
+Calculator|Calculator|Calculatrice|Rechner|Calculadora|Калькулятор|कैलकुलेटर
+Calculator - settings|Calculator - settings|Calculatrice - paramètres|Rechner - Einstellungen|Calculadora - ajustes|Калькулятор - настройки|कैलकुलेटर - सेटिंग्स
+Calculator - About|Calculator - About|Calculatrice - À propos|Rechner - Über|Calculadora - Acerca de|Калькулятор - О программе|कैलकुलेटर - परिचय
+Standard|Standard|Standard|Standard|Estándar|Стандартный|मानक
+Scientific|Scientific|Scientifique|Wissenschaftlich|Científico|Научный|वैज्ञानिक
+Programmer|Programmer|Programmeur|Programmierer|Programador|Программист|प्रोग्रामर
+Date calculation|Date calculation|Calcul de date|Datumsberechnung|Cálculo de fecha|Вычисление даты|तारीख गणना
+Volume|Volume|Volume|Volumen|Volumen|Объём|आयतन
+Length|Length|Longueur|Länge|Longitud|Длина|लम्बाई
+Weight and mass|Weight and mass|Poids et masse|Gewicht und Masse|Peso y masa|Вес и масса|वज़न और द्रव्यमान
+Temperature|Temperature|Température|Temperatur|Temperatura|Температура|तापमान
+Energy|Energy|Énergie|Energie|Energía|Энергия|ऊर्जा
+Area|Area|Aire|Fläche|Área|Площадь|क्षेत्रफल
+Speed|Speed|Vitesse|Geschwindigkeit|Velocidad|Скорость|गति
+Time|Time|Temps|Zeit|Tiempo|Время|समय
+Power|Power|Puissance|Leistung|Potencia|Мощность|शक्ति
+Data|Data|Données|Daten|Datos|Данные|डेटा
+Pressure|Pressure|Pression|Druck|Presión|Давление|दबाव
+Angle|Angle|Angle|Winkel|Ángulo|Угол|कोण
+Roman numerals|Roman numerals|Chiffres romains|Römische Zahlen|Números romanos|Римские цифры|रोमन अंक
+&Display|&Display|&Affichage|&Anzeige|&Pantalla|&Вид|&डिस्प्ले
+&Settings|&Settings|&Paramètres|&Einstellungen|&Ajustes|&Настройки|&सेटिंग्स
+Configure Calculator|Configure Calculator|Configurer la calculatrice|Rechner konfigurieren|Configurar calculadora|Настроить калькулятор|कैलकुलेटर कॉन्फ़िगर करें
+About|About|À propos|Über|Acerca de|О программе|परिचय
+Settings|Settings|Paramètres|Einstellungen|Ajustes|Настройки|सेटिंग्स
+About equal to|About equal to|Environ équivalent à|Ungefähr gleich|Aproximadamente igual a|Приблизительно равно|लगभग बराबर
+Milliliters|Milliliters|Millilitres|Milliliter|Mililitros|Миллилитры|मिलीलीटर
+Cubic centimeters|Cubic centimeters|Centimètres cubes|Kubikzentimeter|Centímetros cúbicos|Кубические сантиметры|क्यूबिक सेंटीमीटर
+Liters|Liters|Litres|Liter|Litros|Литры|लीटर
+Cubic meters|Cubic meters|Mètres cubes|Kubikmeter|Metros cúbicos|Кубические метры|क्यूबिक मीटर
+Cubic inches|Cubic inches|Pouces cubes|Kubikzoll|Pulgadas cúbicas|Кубические дюймы|क्यूबिक इंच
+Cubic feet|Cubic feet|Pieds cubes|Kubikfuß|Pies cúbicos|Кубические футы|क्यूबिक फ़ीट
+Cups (U.S.)|Cups (U.S.)|Tasses (U.S.)|Tassen (U.S.)|Tazas (EE.UU.)|Чашки (США)|कप (यू.एस.)
+Pints (U.S.)|Pints (U.S.)|Pintes (U.S.)|Pints (U.S.)|Pintas (EE.UU.)|Пинты (США)|पिंट (यू.एस.)
+Quarts (U.S.)|Quarts (U.S.)|Quarts (U.S.)|Quarts (U.S.)|Cuartos (EE.UU.)|Кварты (США)|क्वार्ट (यू.एस.)
+Gallons (U.S.)|Gallons (U.S.)|Gallons (U.S.)|Gallonen (U.S.)|Galones (EE.UU.)|Галлоны (США)|गैलन (यू.एस.)
+Gallons (Imp.)|Gallons (Imp.)|Gallons (Imp.)|Gallonen (Imp.)|Galones (Imp.)|Галлоны (имп.)|गैलन (इम्प.)
+Bathtubs|Bathtubs|Baignoires|Badewannen|Bañeras|Ванны|बाथटब
+Millimeters|Millimeters|Millimètres|Millimeter|Milímetros|Миллиметры|मिलीमीटर
+Centimeters|Centimeters|Centimètres|Zentimeter|Centímetros|Сантиметры|सेंटीमीटर
+Meters|Meters|Mètres|Meter|Metros|Метры|मीटर
+Kilometers|Kilometers|Kilomètres|Kilometer|Kilómetros|Километры|किलोमीटर
+Inches|Inches|Pouces|Zoll|Pulgadas|Дюймы|इंच
+Feet|Feet|Pieds|Fuß|Pies|Футы|फ़ीट
+Yards|Yards|Yards|Yards|Yardas|Ярды|गज़
+Miles|Miles|Miles|Meilen|Millas|Мили|मील
+Nautical miles|Nautical miles|Milles nautiques|Seemeilen|Millas náuticas|Морские мили|समुद्री मील
+Grams|Grams|Grammes|Gramm|Gramos|Граммы|ग्राम
+Kilograms|Kilograms|Kilogrammes|Kilogramm|Kilogramos|Килограммы|किलोग्राम
+Tonnes|Tonnes|Tonnes|Tonnen|Toneladas|Тонны|टन
+Ounces|Ounces|Onces|Unzen|Onzas|Унции|औंस
+Pounds|Pounds|Livres|Pfund|Libras|Фунты|पाउंड
+Stones|Stones|Stones|Stones|Stones|Стоуны|स्टोन
+Tons (U.S. short)|Tons (U.S. short)|Tonnes (U.S. court)|Tonnen (U.S. kurz)|Toneladas (EE.UU. corta)|Тонны (США, короткие)|टन (यू.एस. शॉर्ट)
+Carats|Carats|Carats|Karat|Quilates|Караты|कैरेट
+Celsius|Celsius|Celsius|Celsius|Celsius|Цельсий|सेल्सियस
+Fahrenheit|Fahrenheit|Fahrenheit|Fahrenheit|Fahrenheit|Фаренгейт|फ़ारेनहाइट
+Kelvin|Kelvin|Kelvin|Kelvin|Kelvin|Кельвин|केल्विन
+Joules|Joules|Joules|Joule|Julios|Джоули|जूल
+Kilojoules|Kilojoules|Kilojoules|Kilojoule|Kilojulios|Килоджоули|किलोजूल
+Calories|Calories|Calories|Kalorien|Calorías|Калории|कैलोरी
+Kilocalories|Kilocalories|Kilocalories|Kilokalorien|Kilocalorías|Килокалории|किलोकैलोरी
+Watt-hours|Watt-hours|Wattheures|Wattstunden|Vatios-hora|Ватт-часы|वॉट-घंटे
+Kilowatt-hours|Kilowatt-hours|Kilowattheures|Kilowattstunden|Kilovatios-hora|Киловатт-часы|किलोवॉट-घंटे
+Electronvolts|Electronvolts|Électronvolts|Elektronenvolt|Electronvoltios|Электронвольты|इलेक्ट्रॉनवोल्ट
+BTUs|BTUs|BTU|BTU|BTU|БТЕ|बीटीयू
+Foot-pounds|Foot-pounds|Pied-livres|Fußpfund|Pie-libras|Фут-фунты|फ़ुट-पाउंड
+Square millimeters|Square millimeters|Millimètres carrés|Quadratmillimeter|Milímetros cuadrados|Кв. миллиметры|वर्ग मिलीमीटर
+Square centimeters|Square centimeters|Centimètres carrés|Quadratzentimeter|Centímetros cuadrados|Кв. сантиметры|वर्ग सेंटीमीटर
+Square meters|Square meters|Mètres carrés|Quadratmeter|Metros cuadrados|Кв. метры|वर्ग मीटर
+Square kilometers|Square kilometers|Kilomètres carrés|Quadratkilometer|Kilómetros cuadrados|Кв. километры|वर्ग किलोमीटर
+Square inches|Square inches|Pouces carrés|Quadratzoll|Pulgadas cuadradas|Кв. дюймы|वर्ग इंच
+Square feet|Square feet|Pieds carrés|Quadratfuß|Pies cuadrados|Кв. футы|वर्ग फ़ीट
+Square yards|Square yards|Yards carrés|Quadratyards|Yardas cuadradas|Кв. ярды|वर्ग गज़
+Acres|Acres|Acres|Morgen|Acres|Акры|एकड़
+Hectares|Hectares|Hectares|Hektar|Hectáreas|Гектары|हेक्टेयर
+Meters per second|Meters per second|Mètres par seconde|Meter pro Sekunde|Metros por segundo|Метры в секунду|मीटर प्रति सेकंड
+Kilometers per hour|Kilometers per hour|Kilomètres par heure|Kilometer pro Stunde|Kilómetros por hora|Километры в час|किलोमीटर प्रति घंटा
+Miles per hour|Miles per hour|Miles par heure|Meilen pro Stunde|Millas por hora|Мили в час|मील प्रति घंटा
+Knots|Knots|Nœuds|Knoten|Nudos|Узлы|नॉट
+Mach|Mach|Mach|Mach|Mach|Мах|मैक
+Milliseconds|Milliseconds|Millisecondes|Millisekunden|Milisegundos|Миллисекунды|मिलीसेकंड
+Seconds|Seconds|Secondes|Sekunden|Segundos|Секунды|सेकंड
+Minutes|Minutes|Minutes|Minuten|Minutos|Минуты|मिनट
+Hours|Hours|Heures|Stunden|Horas|Часы|घंटे
+Days|Days|Jours|Tage|Días|Дни|दिन
+Weeks|Weeks|Semaines|Wochen|Semanas|Недели|सप्ताह
+Years|Years|Années|Jahre|Años|Годы|वर्ष
+Watts|Watts|Watts|Watt|Vatios|Ватты|वॉट
+Kilowatts|Kilowatts|Kilowatts|Kilowatt|Kilovatios|Киловатты|किलोवॉट
+Megawatts|Megawatts|Mégawatts|Megawatt|Megavatios|Мегаватты|मेगावॉट
+Horsepower|Horsepower|Chevaux-vapeur|Pferdestärke|Caballos de fuerza|Лошадиные силы|हॉर्सपावर
+Calories per second|Calories per second|Calories par seconde|Kalorien pro Sekunde|Calorías por segundo|Калории в секунду|कैलोरी प्रति सेकंड
+BTUs per hour|BTUs per hour|BTU par heure|BTU pro Stunde|BTU por hora|БТЕ в час|बीटीयू प्रति घंटा
+Bits|Bits|Bits|Bits|Bits|Биты|बिट
+Bytes|Bytes|Octets|Bytes|Bytes|Байты|बाइट
+Kilobytes|Kilobytes|Kilooctets|Kilobyte|Kilobytes|Килобайты|किलोबाइट
+Megabytes|Megabytes|Mégaoctets|Megabyte|Megabytes|Мегабайты|मेगाबाइट
+Gigabytes|Gigabytes|Gigaoctets|Gigabyte|Gigabytes|Гигабайты|गीगाबाइट
+Terabytes|Terabytes|Téraoctets|Terabyte|Terabytes|Терабайты|टेराबाइट
+Petabytes|Petabytes|Pétaoctets|Petabyte|Petabytes|Петабайты|पेटाबाइट
+Pascals|Pascals|Pascals|Pascal|Pascales|Паскали|पास्कल
+Kilopascals|Kilopascals|Kilopascals|Kilopascal|Kilopascales|Килопаскали|किलोपास्कल
+Bars|Bars|Bars|Bar|Bares|Бары|बार
+Atmospheres|Atmospheres|Atmosphères|Atmosphären|Atmósferas|Атмосферы|वायुमंडल
+PSI (lb/in²)|PSI (lb/in²)|PSI (lb/in²)|PSI (lb/in²)|PSI (lb/in²)|PSI (фунт/дюйм²)|PSI (पौंड/इंच²)
+mmHg|mmHg|mmHg|mmHg|mmHg|мм рт. ст.|mmHg
+Degrees|Degrees|Degrés|Grad|Grados|Градусы|डिग्री
+Radians|Radians|Radians|Bogenmaß|Radianes|Радианы|रेडियन
+Gradians|Gradians|Grades|Neugrad|Gradianes|Грады|ग्रेडियन
+coffee cup(s)|coffee cup(s)|tasse(s) de café|Kaffeetasse(n)|taza(s) de café|кофейная чашка(и)|कॉफ़ी कप
+bathtub(s)|bathtub(s)|baignoire(s)|Badewanne(n)|bañera(s)|ванна(ы)|बाथटब
+swimming pool(s)|swimming pool(s)|piscine(s)|Schwimmbecken|piscina(s)|бассейн(ы)|स्विमिंग पूल
+handspan(s)|handspan(s)|empan(s)|Handspanne(n)|palmo(s)|пядь(и)|बालिश्त
+horse length(s)|horse length(s)|longueur(s) de cheval|Pferdelänge(n)|largo(s) de caballo|длина лошади|घोड़े की लंबाई
+blue whale(s)|blue whale(s)|baleine(s) bleue(s)|Blauwal(e)|ballena(s) azul(es)|голубой кит(ы)|नीली व्हेल
+banana(s)|banana(s)|banane(s)|Banane(n)|plátano(s)|банан(ы)|केला(ले)
+elephant(s)|elephant(s)|éléphant(s)|Elefant(en)|elefante(s)|слон(ы)|हाथी
+AA battery capacity|AA battery capacity|capacité de pile AA|AA-Batteriekapazität|capacidad de pila AA|ёмкость батарейки AA|AA बैटरी क्षमता
+slice(s) of cake|slice(s) of cake|part(s) de gâteau|Kuchenstück(e)|trozo(s) de pastel|кусок(ки) торта|केक का टुकड़ा
+A4 sheet(s) of paper|A4 sheet(s) of paper|feuille(s) A4|A4-Blatt/Blätter|hoja(s) A4|лист(ы) A4|A4 कागज़ की शीट
+football field(s)|football field(s)|terrain(s) de football|Fußballfeld(er)|campo(s) de fútbol|футбольное поле(я)|फ़ुटबॉल मैदान
+castle(s)|castle(s)|château(x)|Burg(en)|castillo(s)|замок(ки)|किला(ले)
+turtle speed(s)|turtle speed(s)|vitesse(s) de tortue|Schildkrötengeschwindigkeit|velocidad(es) de tortuga|скорость черепахи|कछुए की गति
+horse speed(s)|horse speed(s)|vitesse(s) de cheval|Pferdegeschwindigkeit|velocidad(es) de caballo|скорость лошади|घोड़े की गति
+passenger jet speed(s)|passenger jet speed(s)|vitesse(s) d'avion de ligne|Passagierjetgeschwindigkeit|velocidad(es) de avión|скорость авиалайнера|यात्री जेट की गति
+eye blink(s)|eye blink(s)|clignement(s) d'œil|Augenblick(e)|parpadeo(s)|моргание(я)|पलक झपकना
+football match(es)|football match(es)|match(s) de football|Fußballspiel(e)|partido(s) de fútbol|футбольный матч(и)|फ़ुटबॉल मैच
+horse(s) power|horse(s) power|puissance(s) de cheval|Pferdestärke(n)|potencia(s) de caballo|лошадиная сила(ы)|हॉर्सपावर
+passenger jet(s) power|passenger jet(s) power|puissance(s) d'avion|Passagierjet-Leistung|potencia(s) de avión|мощность авиалайнера(ов)|यात्री जेट शक्ति
+page(s) of text|page(s) of text|page(s) de texte|Textseite(n)|página(s) de texto|страница(ы) текста|टेक्स्ट पेज
+snowflake pressure(s)|snowflake pressure(s)|pression(s) de flocon|Schneeflocken-Druck|presión(es) de copo|давление снежинки|हिमकण दबाव
+elephant standing pressure(s)|elephant standing pressure(s)|pression(s) d'éléphant debout|Elefanten-Standdruck|presión(es) de elefante|давление стоящего слона|खड़े हाथी का दबाव
+full rotation(s)|full rotation(s)|tour(s) complet(s)|volle Umdrehung(en)|rotación(es) completa(s)|полный оборот(ы)|पूर्ण घूर्णन
+right angle(s)|right angle(s)|angle(s) droit(s)|rechte(r) Winkel|ángulo(s) recto(s)|прямой угол(лы)|समकोण
+°C relative to water freezing (0°C)|°C relative to water freezing (0°C)|°C par rapport à la congélation de l'eau (0°C)|°C relativ zum Gefrierpunkt von Wasser (0°C)|°C relativo a la congelación del agua (0°C)|°C относительно замерзания воды (0°C)|पानी के जमने (0°C) के सापेक्ष °C
+°C relative to a warm bath (40°C)|°C relative to a warm bath (40°C)|°C par rapport à un bain chaud (40°C)|°C relativ zu einem warmen Bad (40°C)|°C relativo a un baño tibio (40°C)|°C относительно теплой ванны (40°C)|गर्म स्नान (40°C) के सापेक्ष °C
+Date|Date|Date|Datum|Fecha|Дата|तारीख
+Difference between dates|Difference between dates|Différence entre dates|Unterschied zwischen Daten|Diferencia entre fechas|Разница между датами|तारीखों के बीच अंतर
+Add or subtract days|Add or subtract days|Ajouter ou soustraire des jours|Tage addieren oder subtrahieren|Añadir o restar días|Добавить или вычесть дни|दिन जोड़ें या घटाएँ
+From|From|Du|Von|Desde|От|से
+To|To|Au|Bis|Hasta|До|तक
+Add|Add|Ajouter|Addieren|Añadir|Добавить|जोड़ें
+Subtract|Subtract|Soustraire|Subtrahieren|Restar|Вычесть|घटाएँ
+Difference|Difference|Différence|Unterschied|Diferencia|Разница|अंतर
+Same dates|Same dates|Dates identiques|Gleiche Daten|Mismas fechas|Одинаковые даты|समान तारीखें
+Invalid date|Invalid date|Date invalide|Ungültiges Datum|Fecha no válida|Недействительная дата|अमान्य तारीख
+Date out of range|Date out of range|Date hors limite|Datum außerhalb des Bereichs|Fecha fuera de rango|Дата вне диапазона|तारीख सीमा से बाहर
+Arabic|Arabic|Chiffres arabes|Arabisch|Arábigo|Арабские|अरबी
+Roman|Roman|Romain|Römisch|Romano|Римские|रोमन
+Invalid|Invalid|Invalide|Ungültig|No válido|Неверно|अमान्य
+Out of range|Out of range|Hors limite|Außer Bereich|Fuera de rango|Вне диапазона|सीमा से बाहर
+Statistics|Statistics|Statistiques|Statistik|Estadística|Статистика|सांख्यिकी
+year|year|an|Jahr|año|год|वर्ष
+years|years|ans|Jahre|años|лет|वर्ष
+month|month|mois|Monat|mes|месяц|महीना
+months|months|mois|Monate|meses|месяцев|महीने
+week|week|semaine|Woche|semana|неделя|सप्ताह
+weeks|weeks|semaines|Wochen|semanas|недель|सप्ताह
+day|day|jour|Tag|día|день|दिन
+days|days|jours|Tage|días|дней|दिन
+History|History|Historique|Verlauf|Historial|История|इतिहास
+No history yet|No history yet|Il n'y a pas encore d'historique|Noch kein Verlauf|No hay historial aún|История пуста|अभी कोई इतिहास नहीं है
+Clear all|Clear all|Tout effacer|Alles löschen|Borrar todo|Очистить всё|सभी साफ़ करें
+Memory|Memory|Mémoire|Speicher|Memoria|Память|मेमोरी
+Clear all memory|Clear all memory|Tout effacer|Alles löschen|Borrar todo|Очистить всю память|सारी मेमोरी साफ़ करें
+Clear from memory|Clear from memory|Effacer de la mémoire|Aus Speicher löschen|Borrar de memoria|Удалить из памяти|मेमोरी से हटाएँ
+Add display value to this memory entry|Add display value to this memory entry|Ajouter à cette entrée mémoire|Anzeigewert zu diesem Speichereintrag addieren|Añadir valor a esta entrada de memoria|Добавить значение в эту ячейку памяти|इस मेमोरी में जोड़ें
+Subtract display value from this memory entry|Subtract display value from this memory entry|Soustraire de cette entrée mémoire|Anzeigewert von diesem Speichereintrag subtrahieren|Restar valor de esta entrada de memoria|Вычесть значение из этой ячейки памяти|इस मेमोरी से घटाएँ
+Copy|Copy|Copier|Kopieren|Copiar|Копировать|कॉपी
+Paste|Paste|Coller|Einfügen|Pegar|Вставить|पेस्ट
+Appearance|Appearance|Apparence|Aussehen|Apariencia|Внешний вид|रंगरूप
+Classic|Classic|Classique|Klassisch|Clásico|Классический|क्लासिक
+Classic dark|Classic dark|Classique sombre|Klassisch dunkel|Clásico oscuro|Классический тёмный|क्लासिक डार्क
+Theme :|Theme :|Thème :|Thema:|Tema:|Тема:|थीम:
+Custom|Custom|Personnalisé|Benutzerdefiniert|Personalizado|Пользовательский|कस्टम
+Language|Language|Langue|Sprache|Idioma|Язык|भाषा
+Close|Close|Fermer|Schließen|Cerrar|Закрыть|बंद करें
+Window background:|Window background:|Fond de la fenêtre:|Fensterhintergrund:|Fondo de ventana:|Фон окна:|विंडो पृष्ठभूमि:
+Main texts:|Main texts:|Textes principaux:|Haupttexte:|Textos principales:|Основные тексты:|मुख्य पाठ:
+Keys (numbers) foreground:|Keys (numbers) foreground:|Touche (chiffres) premier plan:|Tasten (Zahlen) Vordergrund:|Teclas (números) primer plano:|Клавиши (цифры) передний план:|कुंजी (संख्या) अग्रभूमि:
+Keys (numbers) background:|Keys (numbers) background:|Touche (chiffres) arrière-plan:|Tasten (Zahlen) Hintergrund:|Teclas (números) fondo:|Клавиши (цифры) фон:|कुंजी (संख्या) पृष्ठभूमि:
+Keys (+ - / *) foreground:|Keys (+ - / *) foreground:|Touche (+ - / *) premier plan:|Tasten (+ - / *) Vordergrund:|Teclas (+ - / *) primer plano:|Клавиши (+ - / *) передний план:|कुंजी (+ - / *) अग्रभूमि:
+Keys (+ - / *) background:|Keys (+ - / *) background:|Touche (+ - / *) arrière-plan:|Tasten (+ - / *) Hintergrund:|Teclas (+ - / *) fondo:|Клавиши (+ - / *) фон:|कुंजी (+ - / *) पृष्ठभूमि:
+Keys (CE, C, BCKSP) foreground:|Keys (CE, C, BCKSP) foreground:|Touche (CE, C, BCKSP) premier plan:|Tasten (CE, C, RÜCK) Vordergrund:|Teclas (CE, C, RETRO) primer plano:|Клавиши (CE, C, BCKSP) передний план:|कुंजी (CE, C, BCKSP) अग्रभूमि:
+Keys (CE, C, BCKSP) background:|Keys (CE, C, BCKSP) background:|Touche (CE, C, BCKSP) arrière-plan:|Tasten (CE, C, RÜCK) Hintergrund:|Teclas (CE, C, RETRO) fondo:|Клавиши (CE, C, BCKSP) фон:|कुंजी (CE, C, BCKSP) पृष्ठभूमि:
+Keys (Memory & specials) foreground:|Keys (Memory & specials) foreground:|Touche (Mémoire & spéciaux) premier plan:|Tasten (Speicher & Spezial) Vordergrund:|Teclas (Memoria y especiales) primer plano:|Клавиши (Память и спец.) передний план:|कुंजी (मेमोरी व विशेष) अग्रभूमि:
+Keys (Memory & specials) background:|Keys (Memory & specials) background:|Touche (Mémoire & spéciaux) arrière-plan:|Tasten (Speicher & Spezial) Hintergrund:|Teclas (Memoria y especiales) fondo:|Клавиши (Память и спец.) фон:|कुंजी (मेमोरी व विशेष) पृष्ठभूमि:
+Key Equal foreground:|Key Equal foreground:|Touche Égal premier plan:|Taste Gleich Vordergrund:|Tecla Igual primer plano:|Клавиша Равно передний план:|कुंजी बराबर अग्रभूमि:
+Key Equal background:|Key Equal background:|Touche Égal arrière-plan:|Taste Gleich Hintergrund:|Tecla Igual fondo:|Клавиша Равно фон:|कुंजी बराबर पृष्ठभूमि:
+Panels background color:|Panels background color:|Couleur de fond des panneaux:|Panelhintergrundfarbe:|Color de fondo de paneles:|Цвет фона панелей:|पैनल पृष्ठभूमि रंग:
+Display font:|Display font:|Police de l'affichage:|Anzeige-Schriftart:|Fuente de pantalla:|Шрифт дисплея:|डिस्प्ले फ़ॉन्ट:
+Font:|Font:|Police:|Schriftart:|Fuente:|Шрифт:|फ़ॉन्ट:
+Display foreground:|Display foreground:|Affichage premier plan:|Anzeige Vordergrund:|Pantalla primer plano:|Дисплей передний план:|डिस्प्ले अग्रभूमि:
+Display background:|Display background:|Affichage arrière-plan:|Anzeige Hintergrund:|Pantalla fondo:|Дисплей фон:|डिस्प्ले पृष्ठभूमि:
+Display expression:|Display expression:|Affichage expression:|Anzeige Ausdruck:|Pantalla expresión:|Дисплей выражение:|डिस्प्ले अभिव्यक्ति:
+No window decorations|No window decorations|Pas de décorations de fenêtre|Keine Fensterdekoration|Sin decoraciones de ventana|Без оформления окна|विंडो डेकोरेशन नहीं
+Standard menu bar|Standard menu bar|Barre de menu standard|Standard-Menüleiste|Barra de menú estándar|Стандартная панель меню|स्टैंडर्ड मेनू बार
+Invert icons|Invert icons|Inverser les icônes|Symbole invertieren|Invertir iconos|Инвертировать значки|आइकन इन्वर्ट करें
+Icons:|Icons:|Icônes:|Symbole:|Iconos:|Значки:|आइकन:
+Default|Default|Par défaut|Standard|Por defecto|По умолчанию|डिफ़ॉल्ट
+Invert|Invert|Inverser|Invertieren|Invertir|Инвертировать|उल्टा करें
+Color|Color|Couleur|Farbe|Color|Цвет|रंग
+Keys borders|Keys borders|Bordures des touches|Tastenbegrenzung|Bordes de teclas|Границы клавиш|कुंजी बॉर्डर
+Window border|Window border|Bordure de fenêtre|Fensterrand|Borde de ventana|Граница окна|विंडो बॉर्डर
+Display border|Display border|Bordure d'affichage|Anzeigerand|Borde de pantalla|Граница дисплея|डिस्प्ले बॉर्डर
+Bold icons|Bold icons|Icônes en gras|Fette Symbole|Iconos en negrita|Жирные значки|बोल्ड आइकन
+Save as theme|Save as theme|Enregistrer comme thème|Als Thema speichern|Guardar como tema|Сохранить как тему|थीम के रूप में सहेजें
+Delete selected custom theme|Delete selected custom theme|Supprimer le thème personnalisé|Benutzerdefiniertes Thema löschen|Eliminar tema personalizado|Удалить пользовательскую тему|चयनित कस्टम थीम हटाएँ
+Key fonts:|Key fonts:|Polices des touches:|Tasten-Schriftarten:|Fuentes de teclas:|Шрифты клавиш:|कुंजी फ़ॉन्ट:
+A customizable calculator for Trinity DE|A customizable calculator for Trinity DE|Une calculatrice personnalisable pour Trinity DE|Ein anpassbarer Rechner für Trinity DE|Una calculadora personalizable para Trinity DE|Настраиваемый калькулятор для Trinity DE|Trinity DE के लिए अनुकूलन योग्य कैलकुलेटर
+System|System|Système|System|Sistema|Система|सिस्टम
+Save Theme|Save Theme|Enregistrer le thème|Thema speichern|Guardar tema|Сохранить тему|थीम सहेजें
+Enter theme name:|Enter theme name:|Nom du thème:|Themenname eingeben:|Nombre del tema:|Введите имя темы:|थीम का नाम दर्ज करें:
+Delete Theme|Delete Theme|Supprimer le thème|Thema löschen|Eliminar tema|Удалить тему|थीम हटाएँ
+Deg|Deg|Deg|Grad|Gra|Град|डिग्री

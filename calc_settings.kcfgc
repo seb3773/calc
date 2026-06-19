@@ -1,0 +1,8 @@
+# Code generation options for tdeconfig_compiler
+File=calc.kcfg
+ClassName=CalcSettings
+Singleton=true
+Mutators=ShowStat,ShowScientific,ShowLogic,ShowConstants,nameConstant,valueConstant
+# Inherits=TDEConfigSkeleton
+# IncludeFiles=libtdepim/kpimprefs.h
+# MemberVariables=public
