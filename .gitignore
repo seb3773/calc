@@ -1,3 +1,4 @@
 build/
 _work/
 *.deb
+*.code-workspace
