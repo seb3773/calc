@@ -1,9 +1,11 @@
 [Desktop Entry]
+Encoding=UTF-8
 Name=calc
 GenericName=Scientific Calculator
+Comment=Customizable Windows 10/11 Calculator Clone
 Exec=/usr/local/bin/calc
-Icon=calc
+Icon=tdecalc
 Terminal=false
 Type=Application
 X-TDE-StartupNotify=true
-Categories=Qt;TDE;Utility;X-TDE-Utilities-Desktop;
+Categories=Qt;TDE;Utility;Calculator;

@@ -14,9 +14,16 @@ rm -rf "$BUILD_DIR"
 rm -f "${BUILD_DIR}.deb"
 
 # Ensure binary is compiled (ZX0 mode)
-echo "=== Compiling calc in Release mode ==="
-./build.sh clean
-./build.sh
+if [ "$1" = "--no-rebuild" ] || [ "$1" = "-n" ]; then
+    echo "=== Skipping compilation as requested ==="
+elif [ "$1" = "--clean" ] || [ "$1" = "-c" ]; then
+    echo "=== Compiling calc in Release mode (clean build) ==="
+    ./build.sh clean
+    ./build.sh
+else
+    echo "=== Compiling calc in Release mode (incremental build) ==="
+    ./build.sh
+fi
 
 SRC_BIN="build/calc"
 if [ ! -f "$SRC_BIN" ]; then
@@ -77,14 +84,14 @@ if [ -f "$ICON_SRC" ]; then
     REAL_SZ="64x64"
     REAL_DIR="$BUILD_DIR/usr/share/icons/hicolor/$REAL_SZ/apps"
     mkdir -p "$REAL_DIR"
-    cp "$ICON_SRC" "$REAL_DIR/calc.png"
-    chmod 644 "$REAL_DIR/calc.png"
+    cp "$ICON_SRC" "$REAL_DIR/tdecalc.png"
+    chmod 644 "$REAL_DIR/tdecalc.png"
 
     # Create symlinks for standard sizes
     for sz in 16x16 22x22 24x24 32x32 48x48; do
         DST_DIR="$BUILD_DIR/usr/share/icons/hicolor/$sz/apps"
         mkdir -p "$DST_DIR"
-        ln -sf "../../$REAL_SZ/apps/calc.png" "$DST_DIR/calc.png"
+        ln -sf "../../$REAL_SZ/apps/tdecalc.png" "$DST_DIR/tdecalc.png"
     done
 fi
 
