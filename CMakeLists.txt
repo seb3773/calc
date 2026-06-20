@@ -22,12 +22,14 @@ set(COMPRESS "zx0" CACHE STRING "Compression method (zx0, lz4 or zlib)")
 set(ZLIB_LIBS "")
 if(COMPRESS STREQUAL "zx0")
   add_definitions(-DUSE_ZX0)
-  set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/decompressors/zx0/zx0_decompress.c")
-  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/decompressors/zx0")
+  set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/zx0/zx0_decompress.c")
+  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/zx0")
+  set(ZLIB_LIBS "")
 elseif(COMPRESS STREQUAL "lz4")
   add_definitions(-DUSE_LZ4)
-  set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/decompressors/lz4/codec_lz4.c")
-  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/decompressors/lz4")
+  set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/lz4/codec_lz4.c")
+  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/lz4")
+  set(ZLIB_LIBS "")
 elseif(COMPRESS STREQUAL "zlib")
   find_package(ZLIB REQUIRED)
   set(ZLIB_LIBS ${ZLIB_LIBRARIES})
@@ -38,8 +40,8 @@ endif()
 
 include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/knumber
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/knumber
   ${TDE_INCLUDE_DIR}
   ${TQT_INCLUDE_DIRS}
   ${FONTCONFIG_INCLUDE_DIRS}
@@ -118,11 +120,11 @@ find_program(SSSTRIP_EXECUTABLE NAMES sstrip)
 # when building as a standalone top-level CMake project.
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/calc_settings.cpp ${CMAKE_CURRENT_BINARY_DIR}/calc_settings.h
-  COMMAND ${KDE3_KCFGC_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/calc.kcfg ${CMAKE_CURRENT_SOURCE_DIR}/calc_settings.kcfgc
-  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/calc.kcfg ${CMAKE_CURRENT_SOURCE_DIR}/calc_settings.kcfgc
+  COMMAND ${KDE3_KCFGC_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/src/calc.kcfg ${CMAKE_CURRENT_SOURCE_DIR}/src/calc_settings.kcfgc
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/calc.kcfg ${CMAKE_CURRENT_SOURCE_DIR}/src/calc_settings.kcfgc
 )
 
-add_subdirectory( knumber )
+add_subdirectory( src/knumber )
 
 ##### Embedded Assets ##########################################
 file(GLOB ICON_PNGS "${CMAKE_CURRENT_SOURCE_DIR}/icons/*.png")
@@ -184,21 +186,21 @@ set(TDELFEDITOR_EXECUTABLE "")
 
 ##### kcalc (standalone executable) ###########################
 tde_add_executable( calc AUTOMOC
-  SOURCES calc.cpp calc_button.cpp history_window.cpp
-    calc_const_button.cpp calc_const_menu.cpp
-    calc_core.cpp calcdisplay.cpp dlabel.cpp
-    stats.cpp calc_settings.cpp settings_dialog.cpp
-    tqtlcdwidget.cpp
-    tqtdateperiodpicker.cpp
-    tqtdateperiodpickercalendarpanel.cpp
-    tqtdateperiodpickerdecadeview.cpp
-    tqtdateperiodpickerformatter.cpp
-    tqtdateperiodpickermonthview.cpp
-    tqtdateperiodpickernavigator.cpp
-    tqtdateperiodpickerpopup.cpp
-    tqtdateperiodpickerpopupfooter.cpp
-    tqtdateperiodpickeryearview.cpp
-    tqtembeddedimages.cpp
+  SOURCES src/calc.cpp src/calc_button.cpp src/history_window.cpp
+    src/calc_const_button.cpp src/calc_const_menu.cpp
+    src/calc_core.cpp src/calcdisplay.cpp src/dlabel.cpp
+    src/stats.cpp calc_settings.cpp src/settings_dialog.cpp
+    src/tqtlcdwidget.cpp
+    src/tqtdateperiodpicker.cpp
+    src/tqtdateperiodpickercalendarpanel.cpp
+    src/tqtdateperiodpickerdecadeview.cpp
+    src/tqtdateperiodpickerformatter.cpp
+    src/tqtdateperiodpickermonthview.cpp
+    src/tqtdateperiodpickernavigator.cpp
+    src/tqtdateperiodpickerpopup.cpp
+    src/tqtdateperiodpickerpopupfooter.cpp
+    src/tqtdateperiodpickeryearview.cpp
+    src/tqtembeddedimages.cpp
     ${DECOMPRESSOR_SRC}
     ${CMAKE_CURRENT_BINARY_DIR}/embedded_images_data.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/embedded_assets_compat.cpp
@@ -222,16 +224,16 @@ if (SSSTRIP_EXECUTABLE)
 endif()
 
 ##### other data ################################
-install( FILES calcui.rc
+install( FILES src/calcui.rc
   DESTINATION ${DATA_INSTALL_DIR}/calc
 )
 
 tde_create_translated_desktop( calc.desktop )
 
-install( FILES calcupd.upd
+install( FILES src/calcupd.upd
   DESTINATION ${KCONF_UPDATE_INSTALL_DIR}
 )
 
-install( FILES calc.kcfg
+install( FILES src/calc.kcfg
   DESTINATION ${KCFG_INSTALL_DIR}
 )

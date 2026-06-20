@@ -65,16 +65,16 @@ cp "build/calc.desktop" "$BUILD_DIR/usr/share/applications/calc.desktop"
 chmod 644 "$BUILD_DIR/usr/share/applications/calc.desktop"
 
 # Copy TDE config/UI files (to both opt/trinity and usr for maximum TDE compat)
-cp "calcui.rc" "$BUILD_DIR/opt/trinity/share/apps/calc/calcui.rc"
-cp "calcui.rc" "$BUILD_DIR/usr/share/apps/calc/calcui.rc"
+cp "src/calcui.rc" "$BUILD_DIR/opt/trinity/share/apps/calc/calcui.rc"
+cp "src/calcui.rc" "$BUILD_DIR/usr/share/apps/calc/calcui.rc"
 chmod 644 "$BUILD_DIR/opt/trinity/share/apps/calc/calcui.rc" "$BUILD_DIR/usr/share/apps/calc/calcui.rc"
 
-cp "calc.kcfg" "$BUILD_DIR/opt/trinity/share/config.kcfg/calc.kcfg"
-cp "calc.kcfg" "$BUILD_DIR/usr/share/config.kcfg/calc.kcfg"
+cp "src/calc.kcfg" "$BUILD_DIR/opt/trinity/share/config.kcfg/calc.kcfg"
+cp "src/calc.kcfg" "$BUILD_DIR/usr/share/config.kcfg/calc.kcfg"
 chmod 644 "$BUILD_DIR/opt/trinity/share/config.kcfg/calc.kcfg" "$BUILD_DIR/usr/share/config.kcfg/calc.kcfg"
 
-cp "calcupd.upd" "$BUILD_DIR/opt/trinity/share/apps/tdeconf_update/calcupd.upd"
-cp "calcupd.upd" "$BUILD_DIR/usr/share/apps/tdeconf_update/calcupd.upd"
+cp "src/calcupd.upd" "$BUILD_DIR/opt/trinity/share/apps/tdeconf_update/calcupd.upd"
+cp "src/calcupd.upd" "$BUILD_DIR/usr/share/apps/tdeconf_update/calcupd.upd"
 chmod 644 "$BUILD_DIR/opt/trinity/share/apps/tdeconf_update/calcupd.upd" "$BUILD_DIR/usr/share/apps/tdeconf_update/calcupd.upd"
 
 # Package application icons
