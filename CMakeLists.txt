@@ -129,7 +129,7 @@ add_subdirectory( src/knumber )
 ##### Embedded Assets ##########################################
 file(GLOB ICON_PNGS "${CMAKE_CURRENT_SOURCE_DIR}/icons/*.png")
 file(GLOB FONT_TTFS "${CMAKE_CURRENT_SOURCE_DIR}/fonts/*.ttf")
-file(GLOB TXT_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/fonts/*.txt")
+file(GLOB TXT_ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/translations/*.txt")
 
 set(ASSET_POOL_DIR "${CMAKE_CURRENT_BINARY_DIR}/asset_pool")
 
