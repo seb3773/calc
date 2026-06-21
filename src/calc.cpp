@@ -7305,19 +7305,20 @@ void Calculator::updateConverterSizes()
 	int h = height();
 	if (h < 50) return;
 
-	// Scale fonts
 	TQFont baseFont;
 	if (m_displayType == 0) {
 		baseFont = TQFont("Segoe Calc");
 	} else if (m_displayType == 2) {
 		baseFont = m_displayFont;
 	} else if (m_displayType == 4) {
-		baseFont = TQFont("Computo Monospace");
+		baseFont = TQFont("Calculator");
 	} else if (m_displayType == 5) {
-		baseFont = TQFont("Digital Counter 7");
+		baseFont = TQFont("Computo Monospace");
 	} else if (m_displayType == 6) {
-		baseFont = TQFont("Pocket Calculator");
+		baseFont = TQFont("Digital Counter 7");
 	} else if (m_displayType == 7) {
+		baseFont = TQFont("Pocket Calculator");
+	} else if (m_displayType == 8) {
 		baseFont = TQFont("ClassWiz Math CW");
 	} else {
 		baseFont = font();
