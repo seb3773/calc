@@ -104,3 +104,17 @@ cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCOMPRESS=zx0 ..
 cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCOMPRESS=lz4 ..
 make -j$(nproc)
 ```
+
+---
+
+## Screenshots
+
+Click on any screenshot to view the full-size image.
+
+| | | |
+|:---:|:---:|:---:|
+| <a href="screenshots/screenshot_calc_1.jpg"><img src="screenshots/screenshot_calc_1.jpg" width="220" alt="Screenshot 1"/></a> | <a href="screenshots/screenshot_calc_2.jpg"><img src="screenshots/screenshot_calc_2.jpg" width="220" alt="Screenshot 2"/></a> | <a href="screenshots/screenshot_calc_3.jpg"><img src="screenshots/screenshot_calc_3.jpg" width="220" alt="Screenshot 3"/></a> |
+| <a href="screenshots/screenshot_calc_4.jpg"><img src="screenshots/screenshot_calc_4.jpg" width="220" alt="Screenshot 4"/></a> | <a href="screenshots/screenshot_calc_5.jpg"><img src="screenshots/screenshot_calc_5.jpg" width="220" alt="Screenshot 5"/></a> | <a href="screenshots/screenshot_calc_6.jpg"><img src="screenshots/screenshot_calc_6.jpg" width="220" alt="Screenshot 6"/></a> |
+| <a href="screenshots/screenshot_calc_7.jpg"><img src="screenshots/screenshot_calc_7.jpg" width="220" alt="Screenshot 7"/></a> | <a href="screenshots/screenshot_calc_8.jpg"><img src="screenshots/screenshot_calc_8.jpg" width="220" alt="Screenshot 8"/></a> | <a href="screenshots/screenshot_calc_9.jpg"><img src="screenshots/screenshot_calc_9.jpg" width="220" alt="Screenshot 9"/></a> |
+| <a href="screenshots/screenshot_calc_10.jpg"><img src="screenshots/screenshot_calc_10.jpg" width="220" alt="Screenshot 10"/></a> | <a href="screenshots/screenshot_calc_11.jpg"><img src="screenshots/screenshot_calc_11.jpg" width="220" alt="Screenshot 11"/></a> | <a href="screenshots/screenshot_calc_12.jpg"><img src="screenshots/screenshot_calc_12.jpg" width="220" alt="Screenshot 12"/></a> |
+| <a href="screenshots/screenshot_calc_13.jpg"><img src="screenshots/screenshot_calc_13.jpg" width="220" alt="Screenshot 13"/></a> | <a href="screenshots/screenshot_calc_14.jpg"><img src="screenshots/screenshot_calc_14.jpg" width="220" alt="Screenshot 14"/></a> | <a href="screenshots/screenshot_calc_15.jpg"><img src="screenshots/screenshot_calc_15.jpg" width="220" alt="Screenshot 15"/></a> |
