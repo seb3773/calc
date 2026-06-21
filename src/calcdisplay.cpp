@@ -405,10 +405,11 @@ void CalcDisplay::resizeEvent(TQResizeEvent *e)
 		TQFont main_font;
 		if (_display_type == 0) main_font = TQFont("Segoe Calc");
 		else if (_display_type == 2) main_font = _custom_font;
-		else if (_display_type == 4) main_font = TQFont("Computo Monospace");
-		else if (_display_type == 5) main_font = TQFont("Digital Counter 7");
-		else if (_display_type == 6) main_font = TQFont("Pocket Calculator");
-		else if (_display_type == 7) main_font = TQFont("ClassWiz Math CW");
+		else if (_display_type == 4) main_font = TQFont("Calculator");
+		else if (_display_type == 5) main_font = TQFont("Computo Monospace");
+		else if (_display_type == 6) main_font = TQFont("Digital Counter 7");
+		else if (_display_type == 7) main_font = TQFont("Pocket Calculator");
+		else if (_display_type == 8) main_font = TQFont("ClassWiz Math CW");
 		else main_font = f;
 
 		if (_display_type != 2) main_font.setBold(true);
@@ -422,10 +423,11 @@ void CalcDisplay::resizeEvent(TQResizeEvent *e)
 		TQFont hist_font;
 		if (_display_type == 0) hist_font = TQFont("Segoe Calc");
 		else if (_display_type == 2) hist_font = _custom_font;
-		else if (_display_type == 4) hist_font = TQFont("Computo Monospace");
-		else if (_display_type == 5) hist_font = TQFont("Digital Counter 7");
-		else if (_display_type == 6) hist_font = TQFont("Pocket Calculator");
-		else if (_display_type == 7) hist_font = TQFont("ClassWiz Math CW");
+		else if (_display_type == 4) hist_font = TQFont("Calculator");
+		else if (_display_type == 5) hist_font = TQFont("Computo Monospace");
+		else if (_display_type == 6) hist_font = TQFont("Digital Counter 7");
+		else if (_display_type == 7) hist_font = TQFont("Pocket Calculator");
+		else if (_display_type == 8) hist_font = TQFont("ClassWiz Math CW");
 		else hist_font = f;
 
 		hist_font.setBold(false);
@@ -863,7 +865,7 @@ void CalcDisplay::setDisplayType(int type)
 			_main_lcd->string(padded);
 		}
 	} else {
-		// Classic modes (0 = Default, 1 = System, 2 = Custom font, 4 = Computo Monospace, 5 = Digital Counter 7, 6 = Pocket Calculator, 7 = Casio)
+		// Classic modes (0 = System, 1 = Custom font, 3 = Calculator, 4 = Computo Monospace, 5 = Digital Counter 7)
 		if (_history_lcd) _history_lcd->hide();
 		if (_main_lcd) _main_lcd->hide();
 		if (_history_label) _history_label->show();

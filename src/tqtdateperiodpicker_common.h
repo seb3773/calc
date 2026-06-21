@@ -27,6 +27,7 @@ static inline void dppGetPanelColors(TQColor &bg, TQColor &fg)
     fg = defaultFg;
 
     TDEConfig config("calcrc");
+    config.reparseConfiguration();
     config.setGroup("Preferences");
     int mode = config.readNumEntry("AppearanceMode", 2); // default to Theme
     TQString selectedTheme = config.readEntry("SelectedTheme", "Midnight Blue");
@@ -61,6 +62,7 @@ static inline void dppGetPanelColors(TQColor &bg, TQColor &fg)
             fg = TQColor(255, 255, 255);
         } else {
             TDEConfig themeConfig("calcrc");
+            themeConfig.reparseConfiguration();
             themeConfig.setGroup("Theme_" + selectedTheme);
             bg = themeConfig.readColorEntry("PanelBgColor", &defaultPanelBg);
             fg = themeConfig.readColorEntry("FgColor", &defaultFg);

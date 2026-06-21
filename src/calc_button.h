@@ -95,13 +95,17 @@ protected:
  virtual void leaveEvent(TQEvent *e);
 
 public:
+  void invalidateIconCache() {
+      m_cachedPix = TQPixmap();  // invalidate cache
+      m_cachedPixSize = -1;
+      m_cachedPixColor = 0;
+      update();
+  }
   void setCustomIcon(const unsigned char* data, unsigned int len) {
       if (m_iconData == data && m_iconLen == len) return;
       m_iconData = data;
       m_iconLen = len;
-      m_cachedPix = TQPixmap();  // invalidate cache
-      m_cachedPixSize = -1;
-      update();
+      invalidateIconCache();
   }
   const unsigned char* iconData() const { return m_iconData; }
   unsigned int iconLen() const { return m_iconLen; }

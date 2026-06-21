@@ -75,12 +75,14 @@ public:
         
         // Read configuration
         TDEConfig *config = new TDEConfig("calcrc");
+        config->reparseConfiguration();
         config->setGroup("Preferences");
-        int mode = config->readNumEntry("AppearanceMode", 2);
         
         int temp_icon_mode = 0;
         TQColor temp_icon_color = TQColor(255, 255, 255);
         bool temp_bold = false;
+
+        int mode = config->readNumEntry("AppearanceMode", 2);
 
         if (mode == 0) { // Classic Dark
             temp_icon_mode = 1;
@@ -90,16 +92,28 @@ public:
             temp_bold = false;
         } else if (mode == 3) { // Theme
             TQString selectedTheme = config->readEntry("SelectedTheme", "Midnight Blue");
-            if (selectedTheme == "Midnight Blue" || selectedTheme == "Forest Green" || selectedTheme == "internal_classic_dark" || selectedTheme == "orange style") {
+            if (selectedTheme == "Midnight Blue" || selectedTheme == "Forest Green" || 
+                selectedTheme == "internal_classic_dark" || selectedTheme == "Classic Dark" ||
+                selectedTheme == "orange style" || selectedTheme == "Orange Style" ||
+                selectedTheme == "Computo") {
                 temp_icon_mode = 1;
-            } else if (selectedTheme == "Classic Gray" || selectedTheme == "Default" || selectedTheme == "internal_classic") {
+                temp_icon_color = TQColor(255, 255, 255);
+                temp_bold = false;
+            } else if (selectedTheme == "Classic Gray") {
                 temp_icon_mode = 0;
+                temp_icon_color = TQColor(255, 255, 255);
+                temp_bold = true;
+            } else if (selectedTheme == "Default" || selectedTheme == "internal_classic" || selectedTheme == "Classic") {
+                temp_icon_mode = 0;
+                temp_icon_color = TQColor(255, 255, 255);
+                temp_bold = false;
             } else if (selectedTheme == "Coloured") {
                 temp_icon_mode = 2;
                 temp_icon_color = TQColor(255, 252, 62);
                 temp_bold = true;
             } else {
                 TDEConfig *themeConfig = new TDEConfig("calcrc");
+                themeConfig->reparseConfiguration();
                 themeConfig->setGroup("Theme_" + selectedTheme);
                 temp_icon_mode = themeConfig->readNumEntry("IconMode", themeConfig->readBoolEntry("InvertIcons", false) ? 1 : 0);
                 TQColor defIconColor(255, 255, 255);

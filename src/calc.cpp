@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <vector>
 
 
 #include <tqbuttongroup.h>
@@ -3148,7 +3149,8 @@ void Calculator::slotConstclicked(int button)
 
 void Calculator::showSettings()
 {
-	SettingsDialog *dlg = new SettingsDialog(false, this);
+	SettingsDialog *dlg = new SettingsDialog(false, tqApp->desktop());
+	connect(dlg, TQ_SIGNAL(settingsApplied()), this, TQ_SLOT(updateSettings()));
 	if (dlg->exec() == TQDialog::Accepted) {
 		updateSettings();
 	}
@@ -3862,6 +3864,7 @@ void Calculator::set_colors(bool clear_cache)
 	calc_display->changeSettings();
 
 	TDEConfig *config = new TDEConfig("calcrc");
+	config->reparseConfiguration();
 	config->setGroup("Preferences");
 	int mode = config->readNumEntry("AppearanceMode", 2); // default to Classic
 	TQString selectedTheme = config->readEntry("SelectedTheme", "Midnight Blue");
@@ -3911,8 +3914,8 @@ void Calculator::set_colors(bool clear_cache)
 		colorMemKeyBg = TQColor(0, 0, 0);
 		colorEqualBg = TQColor(0, 103, 192);
 		colorEqualFg = TQColor(255, 255, 255);
-		displayType = 1;
-		keyFontType = 1;
+		displayType = 0;
+		keyFontType = 0;
 		colorDisplayFg = TQColor(255, 255, 255);
 		colorDisplayBg = TQColor(0, 0, 0);
 		colorPanelBg = TQColor(62, 62, 62);
@@ -3941,8 +3944,8 @@ void Calculator::set_colors(bool clear_cache)
 		colorMemKeyBg = TQColor(242, 242, 242);
 		colorEqualBg = TQColor(0, 103, 192);
 		colorEqualFg = TQColor(255, 255, 255);
-		displayType = 1;
-		keyFontType = 1;
+		displayType = 0;
+		keyFontType = 0;
 		colorDisplayFg = TQColor(0, 0, 0);
 		colorDisplayBg = TQColor(242, 242, 242);
 		colorPanelBg = TQColor(231, 231, 231);
@@ -4002,7 +4005,7 @@ void Calculator::set_colors(bool clear_cache)
 			colorMemKeyBg = TQColor(33, 54, 42);
 			colorEqualBg = TQColor(46, 139, 87);
 			colorEqualFg = TQColor(255, 255, 255);
-			displayType = 6;
+			displayType = 7;
 			keyFontType = 0;
 			colorDisplayFg = TQColor(57, 255, 20);
 			colorDisplayBg = TQColor(11, 19, 14);
@@ -4032,11 +4035,11 @@ void Calculator::set_colors(bool clear_cache)
 			colorMemKeyBg = TQColor(192, 192, 192);
 			colorEqualBg = TQColor(128, 128, 128);
 			colorEqualFg = TQColor(255, 255, 255);
-			displayType = 7;
+			displayType = 8;
 			keyFontType = 0;
 			colorDisplayFg = TQColor(242, 242, 242);
 			colorDisplayBg = TQColor(126, 126, 126);
-			colorPanelBg = TQColor(221, 221, 221);
+			colorPanelBg = TQColor(133, 133, 133);
 			colorMenuBg = TQColor(221, 221, 221);
 			noDeco = false;
 			standardMenuBar = false;
@@ -4047,7 +4050,7 @@ void Calculator::set_colors(bool clear_cache)
 			windowBorderColor = TQColor(0, 0, 0);
 			displayBorder = false;
 			displayBorderColor = TQColor(0, 0, 0);
-			boldIcons = false;
+			boldIcons = true;
 		} else if (selectedTheme == "Coloured") {
 			colorBg = TQColor(93, 115, 215);
 			colorFg = TQColor(255, 255, 255);
@@ -4062,7 +4065,7 @@ void Calculator::set_colors(bool clear_cache)
 			colorMemKeyBg = TQColor(26, 56, 115);
 			colorEqualBg = TQColor(210, 188, 45);
 			colorEqualFg = TQColor(255, 255, 255);
-			displayType = 4;
+			displayType = 6;
 			keyFontType = 0;
 			colorDisplayFg = TQColor(255, 255, 255);
 			colorDisplayBg = TQColor(11, 19, 14);
@@ -4092,9 +4095,39 @@ void Calculator::set_colors(bool clear_cache)
 			colorMemKeyBg = TQColor(176, 75, 17);
 			colorEqualBg = TQColor(156, 59, 24);
 			colorEqualFg = TQColor(255, 255, 255);
-			displayType = 5;
+			displayType = 6;
 			keyFontType = 0;
 			colorDisplayFg = TQColor(253, 139, 63);
+			colorDisplayBg = TQColor(44, 22, 16);
+			colorPanelBg = TQColor(110, 52, 41);
+			colorMenuBg = TQColor(181, 111, 25);
+			noDeco = true;
+			standardMenuBar = false;
+			invertIcons = true;
+			keysBorders = false;
+			keysBordersColor = TQColor(0, 0, 0);
+			windowBorder = true;
+			windowBorderColor = TQColor(124, 79, 0);
+			displayBorderColor = TQColor(0, 0, 0);
+			boldIcons = false;
+		} else if (selectedTheme == "Computo") {
+			colorBg = TQColor(28, 46, 36);
+			colorFg = TQColor(230, 242, 235);
+			colorSmallFg = TQColor(30, 137, 11);
+			colorNumKeyFg = TQColor(230, 242, 235);
+			colorNumKeyBg = TQColor(42, 66, 53);
+			colorOpKeyFg = TQColor(230, 242, 235);
+			colorOpKeyBg = TQColor(33, 54, 42);
+			colorClearKeyFg = TQColor(230, 242, 235);
+			colorClearKeyBg = TQColor(33, 54, 42);
+			colorMemKeyFg = TQColor(230, 242, 235);
+			colorMemKeyBg = TQColor(33, 54, 42);
+			colorEqualBg = TQColor(46, 139, 87);
+			colorEqualFg = TQColor(255, 255, 255);
+			displayType = 5;
+			keyFontType = 0;
+			keyFont = TQFont("Segoe UI", 12);
+			colorDisplayFg = TQColor(57, 255, 20);
 			colorDisplayBg = TQColor(11, 19, 14);
 			colorPanelBg = TQColor(42, 66, 53);
 			colorMenuBg = TQColor(42, 66, 53);
@@ -4103,12 +4136,12 @@ void Calculator::set_colors(bool clear_cache)
 			invertIcons = true;
 			keysBorders = false;
 			keysBordersColor = TQColor(0, 0, 0);
-			windowBorder = true;
-			windowBorderColor = TQColor(124, 79, 0);
+			windowBorder = false;
+			windowBorderColor = TQColor(0, 0, 0);
 			displayBorder = false;
 			displayBorderColor = TQColor(0, 0, 0);
 			boldIcons = false;
-		} else if (selectedTheme == "Default" || selectedTheme == "internal_classic") {
+		} else if (selectedTheme == "Default" || selectedTheme == "internal_classic" || selectedTheme == "Classic") {
 			colorBg = TQColor(242, 242, 242);
 			colorFg = TQColor(0, 0, 0);
 			colorSmallFg = TQColor(71, 71, 71);
@@ -4122,8 +4155,8 @@ void Calculator::set_colors(bool clear_cache)
 			colorMemKeyBg = TQColor(242, 242, 242);
 			colorEqualBg = TQColor(0, 103, 192);
 			colorEqualFg = TQColor(255, 255, 255);
-			displayType = 1;
-			keyFontType = 1;
+			displayType = 0;
+			keyFontType = 0;
 			colorDisplayFg = TQColor(0, 0, 0);
 			colorDisplayBg = TQColor(242, 242, 242);
 			colorPanelBg = TQColor(231, 231, 231);
@@ -4138,7 +4171,7 @@ void Calculator::set_colors(bool clear_cache)
 			displayBorder = false;
 			displayBorderColor = TQColor(0, 0, 0);
 			boldIcons = false;
-		} else if (selectedTheme == "internal_classic_dark") {
+		} else if (selectedTheme == "internal_classic_dark" || selectedTheme == "Classic Dark") {
 			colorBg = TQColor(0, 0, 0);
 			colorFg = TQColor(255, 255, 255);
 			colorSmallFg = TQColor(222, 222, 222);
@@ -4152,8 +4185,8 @@ void Calculator::set_colors(bool clear_cache)
 			colorMemKeyBg = TQColor(0, 0, 0);
 			colorEqualBg = TQColor(0, 103, 192);
 			colorEqualFg = TQColor(255, 255, 255);
-			displayType = 1;
-			keyFontType = 1;
+			displayType = 0;
+			keyFontType = 0;
 			colorDisplayFg = TQColor(255, 255, 255);
 			colorDisplayBg = TQColor(0, 0, 0);
 			colorPanelBg = TQColor(62, 62, 62);
@@ -4170,6 +4203,7 @@ void Calculator::set_colors(bool clear_cache)
 			boldIcons = false;
 		} else {
 			TDEConfig *themeConfig = new TDEConfig("calcrc");
+			themeConfig->reparseConfiguration();
 			themeConfig->setGroup("Theme_" + selectedTheme);
 			colorBg = themeConfig->readColorEntry("BgColor", &defaultBg);
 			colorFg = themeConfig->readColorEntry("FgColor", &defaultFg);
@@ -4411,10 +4445,8 @@ void Calculator::set_colors(bool clear_cache)
 	}
 
 	// Invalidate icon cache and update all buttons containing custom icons
-	if (clear_cache) {
-		IconUtils::clearCache();
-		updateConversionMimeIcons();
-	}
+	IconUtils::clearCache();
+	updateConversionMimeIcons();
 	CalcButton::keys_borders = keysBorders;
 	CalcButton::keys_borders_color = keysBordersColor;
 	TQObjectList *btns = queryList("CalcButton");
@@ -4432,7 +4464,7 @@ void Calculator::set_colors(bool clear_cache)
 			                                 colorEqualBg, colorEqualFg,
 			                                 colorPanelBg, colorFg, colorBg));
 			if (btn->iconData() && btn->iconLen() > 0) {
-				btn->setCustomIcon(btn->iconData(), btn->iconLen());
+				btn->invalidateIconCache();
 			} else {
 				if (keyFontType == 0) {
 					btn->setFont(TQFont("Segoe Calc"));

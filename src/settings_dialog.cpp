@@ -86,17 +86,7 @@ SettingsDialog::SettingsDialog(bool startInAboutMode, TQWidget *parent, const ch
     TQFont boldCheckFont = font();
     boldCheckFont.setBold(true);
 
-    chkClassic = new TQCheckBox("Classic", prefsWidget);
-    chkClassic->setFont(boldCheckFont);
-    mainLay->addWidget(chkClassic);
-    connect(chkClassic, TQ_SIGNAL(toggled(bool)), TQ_SLOT(slotClassicToggled(bool)));
-    mainLay->addSpacing(4);
 
-    chkClassicDark = new TQCheckBox("Classic dark", prefsWidget);
-    chkClassicDark->setFont(boldCheckFont);
-    mainLay->addWidget(chkClassicDark);
-    connect(chkClassicDark, TQ_SIGNAL(toggled(bool)), TQ_SLOT(slotClassicDarkToggled(bool)));
-    mainLay->addSpacing(4);
 
     // Theme Layout (horizontal)
     TQHBoxLayout *themeLay = new TQHBoxLayout();
@@ -108,7 +98,7 @@ SettingsDialog::SettingsDialog(bool startInAboutMode, TQWidget *parent, const ch
 
     comboTheme = new TQComboBox(prefsWidget);
     themeLay->addWidget(comboTheme);
-    connect(comboTheme, TQ_SIGNAL(activated(const TQString&)), TQ_SLOT(slotThemeChanged(const TQString&)));
+    connect(comboTheme, TQ_SIGNAL(activated(int)), TQ_SLOT(slotThemeChanged(int)));
 
     btnDeleteTheme = new TQPushButton(prefsWidget);
     btnDeleteTheme->setPixmap(IconUtils::load(trash_png, trash_png_len, 20, 20));
@@ -217,6 +207,7 @@ SettingsDialog::SettingsDialog(bool startInAboutMode, TQWidget *parent, const ch
     comboDisplayType->insertItem("System");
     comboDisplayType->insertItem("Custom");
     comboDisplayType->insertItem("LCD");
+    comboDisplayType->insertItem("Calculator");
     comboDisplayType->insertItem("Computo");
     comboDisplayType->insertItem("DigitalCounter7");
     comboDisplayType->insertItem("PocketCalculator");
@@ -308,10 +299,20 @@ SettingsDialog::SettingsDialog(bool startInAboutMode, TQWidget *parent, const ch
     chkBoldIcons = new TQCheckBox("Bold icons", customSubContainer);
     grid->addMultiCellWidget(chkBoldIcons, 13, 13, 2, 3);
 
-    // Save as theme button
-    btnSaveAsTheme = new TQPushButton("Save as theme", customSubContainer);
-    grid->addMultiCellWidget(btnSaveAsTheme, 15, 15, 0, 3);
+    // Save as theme and Apply buttons row
+    TQWidget *buttonRowWidget = new TQWidget(prefsWidget);
+    TQHBoxLayout *themeButtonsLay = new TQHBoxLayout(buttonRowWidget, 0, 6);
+    themeButtonsLay->addStretch();
+
+    btnApply = new TQPushButton("Apply", buttonRowWidget);
+    connect(btnApply, TQ_SIGNAL(clicked()), TQ_SLOT(slotApplyClicked()));
+    themeButtonsLay->addWidget(btnApply);
+
+    btnSaveAsTheme = new TQPushButton("Save as theme", buttonRowWidget);
     connect(btnSaveAsTheme, TQ_SIGNAL(clicked()), TQ_SLOT(slotSaveAsThemeClicked()));
+    themeButtonsLay->addWidget(btnSaveAsTheme);
+
+    mainLay->addWidget(buttonRowWidget);
 
     mainLay->addSpacing(8);
 
@@ -444,55 +445,63 @@ SettingsDialog::~SettingsDialog()
 {
 }
 
-void SettingsDialog::slotClassicDarkToggled(bool checked)
+void SettingsDialog::slotApplyClicked()
+{
+    saveSettings();
+    emit settingsApplied();
+    m_initMode = chkCustom->isChecked() ? 1 : 
+                (comboTheme->currentText() == "Classic" ? 2 : 
+                 (comboTheme->currentText() == "Classic Dark" ? 0 : 3));
+    m_initTheme = comboTheme->currentText();
+    updateApplyButtonState();
+}
+
+void SettingsDialog::slotCustomToggled(bool checked)
+{
+    if (checked) {
+        chkTheme->blockSignals(true);
+        chkTheme->setChecked(false);
+        chkTheme->blockSignals(false);
+
+        updateSubElementsEnabledState();
+    } else {
+        if (!chkTheme->isChecked()) {
+            chkCustom->blockSignals(true);
+            chkCustom->setChecked(true);
+            chkCustom->blockSignals(false);
+        }
+    }
+    updateApplyButtonState();
+}
+
+void SettingsDialog::slotThemeToggled(bool checked)
 {
     if (checked) {
         chkCustom->blockSignals(true);
         chkCustom->setChecked(false);
         chkCustom->blockSignals(false);
 
-        chkClassic->blockSignals(true);
-        chkClassic->setChecked(false);
-        chkClassic->blockSignals(false);
-
-        chkTheme->blockSignals(true);
-        chkTheme->setChecked(false);
-        chkTheme->blockSignals(false);
-
         updateSubElementsEnabledState();
-        loadThemeColors("internal_classic_dark");
+        loadThemeColors(comboTheme->currentText());
     } else {
-        if (!chkCustom->isChecked() && !chkClassic->isChecked() && !chkTheme->isChecked()) {
-            chkClassicDark->blockSignals(true);
-            chkClassicDark->setChecked(true);
-            chkClassicDark->blockSignals(false);
+        if (!chkCustom->isChecked()) {
+            chkTheme->blockSignals(true);
+            chkTheme->setChecked(true);
+            chkTheme->blockSignals(false);
         }
     }
+    updateApplyButtonState();
 }
 
-void SettingsDialog::slotCustomToggled(bool checked)
+void SettingsDialog::slotThemeChanged(int index)
 {
-    if (checked) {
-        chkClassicDark->blockSignals(true);
-        chkClassicDark->setChecked(false);
-        chkClassicDark->blockSignals(false);
-
-        chkClassic->blockSignals(true);
-        chkClassic->setChecked(false);
-        chkClassic->blockSignals(false);
-
-        chkTheme->blockSignals(true);
-        chkTheme->setChecked(false);
-        chkTheme->blockSignals(false);
-
-        updateSubElementsEnabledState();
-    } else {
-        if (!chkClassicDark->isChecked() && !chkClassic->isChecked() && !chkTheme->isChecked()) {
-            chkCustom->blockSignals(true);
-            chkCustom->setChecked(true);
-            chkCustom->blockSignals(false);
-        }
+    (void)index;
+    TQString themeName = comboTheme->currentText();
+    if (chkTheme->isChecked()) {
+        loadThemeColors(themeName);
     }
+    updateSubElementsEnabledState();
+    updateApplyButtonState();
 }
 
 void SettingsDialog::slotDisplayTypeChanged(int index)
@@ -510,66 +519,6 @@ void SettingsDialog::slotKeyFontTypeChanged(int index)
 void SettingsDialog::slotIconModeChanged(int index)
 {
     (void)index;
-    updateSubElementsEnabledState();
-}
-
-void SettingsDialog::slotClassicToggled(bool checked)
-{
-    if (checked) {
-        chkClassicDark->blockSignals(true);
-        chkClassicDark->setChecked(false);
-        chkClassicDark->blockSignals(false);
-
-        chkCustom->blockSignals(true);
-        chkCustom->setChecked(false);
-        chkCustom->blockSignals(false);
-
-        chkTheme->blockSignals(true);
-        chkTheme->setChecked(false);
-        chkTheme->blockSignals(false);
-
-        updateSubElementsEnabledState();
-        loadThemeColors("internal_classic");
-    } else {
-        if (!chkClassicDark->isChecked() && !chkCustom->isChecked() && !chkTheme->isChecked()) {
-            chkClassic->blockSignals(true);
-            chkClassic->setChecked(true);
-            chkClassic->blockSignals(false);
-        }
-    }
-}
-
-void SettingsDialog::slotThemeToggled(bool checked)
-{
-    if (checked) {
-        chkClassicDark->blockSignals(true);
-        chkClassicDark->setChecked(false);
-        chkClassicDark->blockSignals(false);
-
-        chkCustom->blockSignals(true);
-        chkCustom->setChecked(false);
-        chkCustom->blockSignals(false);
-
-        chkClassic->blockSignals(true);
-        chkClassic->setChecked(false);
-        chkClassic->blockSignals(false);
-
-        updateSubElementsEnabledState();
-        loadThemeColors(comboTheme->currentText());
-    } else {
-        if (!chkClassicDark->isChecked() && !chkCustom->isChecked() && !chkClassic->isChecked()) {
-            chkTheme->blockSignals(true);
-            chkTheme->setChecked(true);
-            chkTheme->blockSignals(false);
-        }
-    }
-}
-
-void SettingsDialog::slotThemeChanged(const TQString &themeName)
-{
-    if (chkTheme->isChecked()) {
-        loadThemeColors(themeName);
-    }
     updateSubElementsEnabledState();
 }
 
@@ -591,11 +540,14 @@ void SettingsDialog::updateSubElementsEnabledState()
 
     customSubContainer->setEnabled(customActive);
     comboTheme->setEnabled(themeActive);
+    btnSaveAsTheme->setEnabled(customActive);
 
     TQString selectedTheme = comboTheme->currentText();
     bool isCustomTheme = (selectedTheme != "Default" && selectedTheme != "Midnight Blue" &&
                           selectedTheme != "Forest Green" && selectedTheme != "Classic Gray" &&
                           selectedTheme != "Coloured" && selectedTheme != "orange style" &&
+                          selectedTheme != "Computo" && selectedTheme != "computo_new" &&
+                          selectedTheme != "Classic" && selectedTheme != "Classic Dark" &&
                           !selectedTheme.isEmpty());
     btnDeleteTheme->setEnabled(themeActive && isCustomTheme);
 
@@ -621,8 +573,6 @@ void SettingsDialog::updateSubElementsEnabledState()
         disabledColor = TQColor(128, 128, 128);
     }
 
-    setCheckboxTextColor(chkClassic, activeColor, disabledColor);
-    setCheckboxTextColor(chkClassicDark, activeColor, disabledColor);
     setCheckboxTextColor(chkTheme, activeColor, disabledColor);
     setCheckboxTextColor(chkCustom, activeColor, disabledColor);
 }
@@ -630,11 +580,14 @@ void SettingsDialog::updateSubElementsEnabledState()
 void SettingsDialog::populateThemesCombo()
 {
     comboTheme->clear();
+    comboTheme->insertItem("Classic");
+    comboTheme->insertItem("Classic Dark");
     comboTheme->insertItem("Midnight Blue");
     comboTheme->insertItem("Forest Green");
     comboTheme->insertItem("Classic Gray");
     comboTheme->insertItem("Coloured");
     comboTheme->insertItem("orange style");
+    comboTheme->insertItem("Computo");
 
     TDEConfig *config = new TDEConfig("calcrc");
     TQStringList groups = config->groupList();
@@ -644,7 +597,9 @@ void SettingsDialog::populateThemesCombo()
             if (themeName != "Default" && themeName != "Midnight Blue" &&
                 themeName != "Forest Green" && themeName != "Classic Gray" &&
                 themeName != "Coloured" && themeName != "orange style" &&
-                themeName != "internal_classic" && themeName != "internal_classic_dark") {
+                themeName != "Computo" && themeName != "computo_new" &&
+                themeName != "internal_classic" && themeName != "internal_classic_dark" &&
+                themeName != "Classic" && themeName != "Classic Dark") {
                 comboTheme->insertItem(themeName);
             }
         }
@@ -654,7 +609,69 @@ void SettingsDialog::populateThemesCombo()
 
 void SettingsDialog::loadThemeColors(const TQString &themeName)
 {
-    if (themeName == "Dark Mode" || themeName == "internal_classic_dark") {
+    TQString fixGroupName = "";
+    if (themeName == "Classic Gray") {
+        fixGroupName = "Theme_FIX_Classic Gray";
+    } else if (themeName == "orange style" || themeName == "Orange Style") {
+        fixGroupName = "Theme_FIX_Orange Style";
+    } else if (themeName == "Computo") {
+        fixGroupName = "Theme_FIX_Computo";
+    }
+
+    if (!fixGroupName.isEmpty()) {
+        TDEConfig *config = new TDEConfig("calcrc");
+        config->reparseConfiguration();
+        if (config->hasGroup(fixGroupName)) {
+            config->setGroup(fixGroupName);
+            colorBg->setColor(config->readColorEntry("BgColor", &defaultBg));
+            colorFg->setColor(config->readColorEntry("FgColor", &defaultFg));
+            colorSmallFg->setColor(config->readColorEntry("SmallFgColor", &defaultSmallFg));
+            colorNumKeyFg->setColor(config->readColorEntry("NumKeyFgColor", &defaultNumKeyFg));
+            colorNumKeyBg->setColor(config->readColorEntry("NumKeyBgColor", &defaultNumKeyBg));
+            colorOpKeyFg->setColor(config->readColorEntry("OpKeyFgColor", &defaultOtherKeyFg));
+            colorOpKeyBg->setColor(config->readColorEntry("OpKeyBgColor", &defaultOtherKeyBg));
+            colorClearKeyFg->setColor(config->readColorEntry("ClearKeyFgColor", &defaultOtherKeyFg));
+            colorClearKeyBg->setColor(config->readColorEntry("ClearKeyBgColor", &defaultOtherKeyBg));
+            colorMemKeyFg->setColor(config->readColorEntry("MemKeyFgColor", &defaultOtherKeyFg));
+            colorMemKeyBg->setColor(config->readColorEntry("MemKeyBgColor", &defaultOtherKeyBg));
+            colorEqualBg->setColor(config->readColorEntry("EqualBgColor", &defaultEqualBg));
+            colorEqualFg->setColor(config->readColorEntry("EqualFgColor", &defaultEqualFg));
+            int displayType = config->readNumEntry("DisplayType", 0);
+            if (displayType == 2 && !config->hasKey("DisplayFont")) {
+                displayType = 3;
+            }
+            comboDisplayType->setCurrentItem(displayType);
+            TQFont defaultF = TQFont("Courier New", 12);
+            fontDisplay->setFont(config->readFontEntry("DisplayFont", &defaultF));
+
+            int keyFontType = config->readNumEntry("KeyFontType", 0);
+            comboKeyFontType->setCurrentItem(keyFontType);
+            TQFont defaultKF = font();
+            fontKey->setFont(config->readFontEntry("KeyFont", &defaultKF));
+            colorDisplayFg->setColor(config->readColorEntry("DisplayFgColor", &defaultDisplayFg));
+            colorDisplayBg->setColor(config->readColorEntry("DisplayBgColor", &defaultDisplayBg));
+            TQColor defaultMenuBgThemeVal = config->readColorEntry("PanelBgColor", &defaultPanelBg);
+            colorPanelBg->setColor(defaultMenuBgThemeVal);
+            colorMenuBg->setColor(config->readColorEntry("MenuBgColor", &defaultMenuBgThemeVal));
+            chkNoDeco->setChecked(config->readBoolEntry("NoDeco", false));
+            chkStandardMenuBar->setChecked(config->readBoolEntry("StandardMenuBar", false));
+            comboIconMode->setCurrentItem(config->readNumEntry("IconMode", config->readBoolEntry("InvertIcons", false) ? 1 : 0));
+            TQColor defIconColor(255, 255, 255);
+            btnIconColor->setColor(config->readColorEntry("IconColor", &defIconColor));
+            chkKeysBorders->setChecked(config->readBoolEntry("KeysBorders", false));
+            colorKeysBorders->setColor(config->readColorEntry("KeysBordersColor", &defaultKeysBorders));
+            chkWindowBorder->setChecked(config->readBoolEntry("WindowBorder", false));
+            colorWindowBorder->setColor(config->readColorEntry("WindowBorderColor", &defaultWindowBorder));
+            chkDisplayBorder->setChecked(config->readBoolEntry("DisplayBorder", false));
+            colorDisplayBorder->setColor(config->readColorEntry("DisplayBorderColor", &defaultDisplayBorder));
+            chkBoldIcons->setChecked(config->readBoolEntry("BoldIcons", false));
+            delete config;
+            return;
+        }
+        delete config;
+    }
+
+    if (themeName == "Classic Dark" || themeName == "Dark Mode" || themeName == "internal_classic_dark") {
         colorBg->setColor(TQColor(0, 0, 0));
         colorFg->setColor(TQColor(255, 255, 255));
         colorSmallFg->setColor(TQColor(222, 222, 222));
@@ -668,9 +685,9 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorMemKeyBg->setColor(TQColor(0, 0, 0));
         colorEqualBg->setColor(TQColor(0, 103, 192));
         colorEqualFg->setColor(TQColor(255, 255, 255));
-        comboDisplayType->setCurrentItem(1);
+        comboDisplayType->setCurrentItem(0);
         fontDisplay->setFont(font());
-        comboKeyFontType->setCurrentItem(1);
+        comboKeyFontType->setCurrentItem(0);
         fontKey->setFont(font());
         colorDisplayFg->setColor(TQColor(255, 255, 255));
         colorDisplayBg->setColor(TQColor(0, 0, 0));
@@ -687,7 +704,7 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         chkDisplayBorder->setChecked(false);
         colorDisplayBorder->setColor(TQColor(0, 0, 0));
         chkBoldIcons->setChecked(false);
-    } else if (themeName == "Default" || themeName == "internal_classic") {
+    } else if (themeName == "Classic" || themeName == "Default" || themeName == "internal_classic") {
         colorBg->setColor(TQColor(242, 242, 242));
         colorFg->setColor(TQColor(0, 0, 0));
         colorSmallFg->setColor(TQColor(71, 71, 71));
@@ -701,9 +718,9 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorMemKeyBg->setColor(TQColor(242, 242, 242));
         colorEqualBg->setColor(TQColor(0, 103, 192));
         colorEqualFg->setColor(TQColor(255, 255, 255));
-        comboDisplayType->setCurrentItem(1);
+        comboDisplayType->setCurrentItem(0);
         fontDisplay->setFont(font());
-        comboKeyFontType->setCurrentItem(1);
+        comboKeyFontType->setCurrentItem(0);
         fontKey->setFont(font());
         colorDisplayFg->setColor(TQColor(0, 0, 0));
         colorDisplayBg->setColor(TQColor(242, 242, 242));
@@ -767,7 +784,7 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorMemKeyBg->setColor(TQColor(33, 54, 42));
         colorEqualBg->setColor(TQColor(46, 139, 87));
         colorEqualFg->setColor(TQColor(255, 255, 255));
-        comboDisplayType->setCurrentItem(6);
+        comboDisplayType->setCurrentItem(7);
         fontDisplay->setFont(TQFont("Pocket Calculator"));
         comboKeyFontType->setCurrentItem(0);
         fontKey->setFont(TQFont("Segoe Calc", 12));
@@ -800,13 +817,13 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorMemKeyBg->setColor(TQColor(192, 192, 192));
         colorEqualBg->setColor(TQColor(128, 128, 128));
         colorEqualFg->setColor(TQColor(255, 255, 255));
-        comboDisplayType->setCurrentItem(7);
+        comboDisplayType->setCurrentItem(8);
         fontDisplay->setFont(TQFont("ClassWiz Math CW"));
         comboKeyFontType->setCurrentItem(0);
         fontKey->setFont(TQFont("Segoe Calc", 10));
         colorDisplayFg->setColor(TQColor(242, 242, 242));
         colorDisplayBg->setColor(TQColor(126, 126, 126));
-        colorPanelBg->setColor(TQColor(221, 221, 221));
+        colorPanelBg->setColor(TQColor(133, 133, 133));
         colorMenuBg->setColor(TQColor(221, 221, 221));
         chkNoDeco->setChecked(false);
         chkStandardMenuBar->setChecked(false);
@@ -818,7 +835,7 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorWindowBorder->setColor(TQColor(0, 0, 0));
         chkDisplayBorder->setChecked(false);
         colorDisplayBorder->setColor(TQColor(0, 0, 0));
-        chkBoldIcons->setChecked(false);
+        chkBoldIcons->setChecked(true);
     } else if (themeName == "Coloured") {
         colorBg->setColor(TQColor(93, 115, 215));
         colorFg->setColor(TQColor(255, 255, 255));
@@ -833,8 +850,8 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorMemKeyBg->setColor(TQColor(26, 56, 115));
         colorEqualBg->setColor(TQColor(210, 188, 45));
         colorEqualFg->setColor(TQColor(255, 255, 255));
-        comboDisplayType->setCurrentItem(4);
-        fontDisplay->setFont(TQFont("Computo Monospace"));
+        comboDisplayType->setCurrentItem(6);
+        fontDisplay->setFont(TQFont("Digital Counter 7"));
         comboKeyFontType->setCurrentItem(0);
         fontKey->setFont(TQFont("Segoe Calc", 12));
         colorDisplayFg->setColor(TQColor(255, 255, 255));
@@ -866,11 +883,44 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         colorMemKeyBg->setColor(TQColor(176, 75, 17));
         colorEqualBg->setColor(TQColor(156, 59, 24));
         colorEqualFg->setColor(TQColor(255, 255, 255));
-        comboDisplayType->setCurrentItem(5);
+        comboDisplayType->setCurrentItem(6);
         fontDisplay->setFont(TQFont("Digital Counter 7"));
         comboKeyFontType->setCurrentItem(0);
         fontKey->setFont(TQFont("Segoe Calc", 12));
         colorDisplayFg->setColor(TQColor(253, 139, 63));
+        colorDisplayBg->setColor(TQColor(44, 22, 16));
+        colorPanelBg->setColor(TQColor(110, 52, 41));
+        colorMenuBg->setColor(TQColor(181, 111, 25));
+        chkNoDeco->setChecked(true);
+        chkStandardMenuBar->setChecked(false);
+        comboIconMode->setCurrentItem(1);
+        btnIconColor->setColor(TQColor(255, 255, 255));
+        chkKeysBorders->setChecked(false);
+        colorKeysBorders->setColor(TQColor(0, 0, 0));
+        chkWindowBorder->setChecked(true);
+        colorWindowBorder->setColor(TQColor(124, 79, 0));
+        chkDisplayBorder->setChecked(false);
+        colorDisplayBorder->setColor(TQColor(0, 0, 0));
+        chkBoldIcons->setChecked(false);
+    } else if (themeName == "Computo") {
+        colorBg->setColor(TQColor(28, 46, 36));
+        colorFg->setColor(TQColor(230, 242, 235));
+        colorSmallFg->setColor(TQColor(30, 137, 11));
+        colorNumKeyFg->setColor(TQColor(230, 242, 235));
+        colorNumKeyBg->setColor(TQColor(42, 66, 53));
+        colorOpKeyFg->setColor(TQColor(230, 242, 235));
+        colorOpKeyBg->setColor(TQColor(33, 54, 42));
+        colorClearKeyFg->setColor(TQColor(230, 242, 235));
+        colorClearKeyBg->setColor(TQColor(33, 54, 42));
+        colorMemKeyFg->setColor(TQColor(230, 242, 235));
+        colorMemKeyBg->setColor(TQColor(33, 54, 42));
+        colorEqualBg->setColor(TQColor(46, 139, 87));
+        colorEqualFg->setColor(TQColor(255, 255, 255));
+        comboDisplayType->setCurrentItem(5);
+        fontDisplay->setFont(TQFont("Computo Monospace"));
+        comboKeyFontType->setCurrentItem(0);
+        fontKey->setFont(TQFont("Segoe UI", 12));
+        colorDisplayFg->setColor(TQColor(57, 255, 20));
         colorDisplayBg->setColor(TQColor(11, 19, 14));
         colorPanelBg->setColor(TQColor(42, 66, 53));
         colorMenuBg->setColor(TQColor(42, 66, 53));
@@ -880,8 +930,8 @@ void SettingsDialog::loadThemeColors(const TQString &themeName)
         btnIconColor->setColor(TQColor(255, 255, 255));
         chkKeysBorders->setChecked(false);
         colorKeysBorders->setColor(TQColor(0, 0, 0));
-        chkWindowBorder->setChecked(true);
-        colorWindowBorder->setColor(TQColor(124, 79, 0));
+        chkWindowBorder->setChecked(false);
+        colorWindowBorder->setColor(TQColor(0, 0, 0));
         chkDisplayBorder->setChecked(false);
         colorDisplayBorder->setColor(TQColor(0, 0, 0));
         chkBoldIcons->setChecked(false);
@@ -998,7 +1048,11 @@ void SettingsDialog::slotDeleteThemeClicked()
         selectedTheme == "Forest Green" ||
         selectedTheme == "Classic Gray" ||
         selectedTheme == "Coloured" ||
-        selectedTheme == "orange style") {
+        selectedTheme == "orange style" ||
+        selectedTheme == "Computo" ||
+        selectedTheme == "computo_new" ||
+        selectedTheme == "Classic" ||
+        selectedTheme == "Classic Dark") {
         return;
     }
 
@@ -1118,6 +1172,12 @@ void SettingsDialog::loadSettings()
 
     populateThemesCombo();
 
+    if (mode == 0) {
+        selectedTheme = "Classic Dark";
+    } else if (mode == 2) {
+        selectedTheme = "Classic";
+    }
+
     int themeIdx = findComboText(comboTheme, selectedTheme);
     if (themeIdx >= 0) {
         comboTheme->setCurrentItem(themeIdx);
@@ -1125,20 +1185,18 @@ void SettingsDialog::loadSettings()
         comboTheme->setCurrentItem(0);
     }
 
-    chkClassicDark->setChecked(mode == 0);
     chkCustom->setChecked(mode == 1);
-    chkClassic->setChecked(mode == 2);
-    chkTheme->setChecked(mode == 3);
+    chkTheme->setChecked(mode != 1);
 
     updateSubElementsEnabledState();
 
-    if (mode == 0) {
-        loadThemeColors("internal_classic_dark");
-    } else if (mode == 2) {
-        loadThemeColors("internal_classic");
-    } else if (mode == 3) {
+    if (mode != 1) {
         loadThemeColors(comboTheme->currentText());
     }
+
+    m_initMode = mode;
+    m_initTheme = selectedTheme;
+    updateApplyButtonState();
 
     slotLanguageChanged(langIdx);
 }
@@ -1149,9 +1207,18 @@ void SettingsDialog::saveSettings()
     config->setGroup("Preferences");
 
     int mode = 2; // Default to Classic
-    if (chkClassicDark->isChecked()) mode = 0;
-    else if (chkCustom->isChecked()) mode = 1;
-    else if (chkTheme->isChecked()) mode = 3;
+    if (chkCustom->isChecked()) {
+        mode = 1;
+    } else if (chkTheme->isChecked()) {
+        TQString currentTheme = comboTheme->currentText();
+        if (currentTheme == "Classic") {
+            mode = 2;
+        } else if (currentTheme == "Classic Dark") {
+            mode = 0;
+        } else {
+            mode = 3;
+        }
+    }
 
     config->writeEntry("AppearanceMode", mode);
     config->writeEntry("SelectedTheme", comboTheme->currentText());
@@ -1231,8 +1298,6 @@ void SettingsDialog::retranslateUi()
     if (lblLanguage) lblLanguage->setText(tr_str("Language"));
 
     // 3. Mutually exclusive appearance checkboxes
-    chkClassic->setText(tr_str("Classic"));
-    chkClassicDark->setText(tr_str("Classic dark"));
     chkCustom->setText(tr_str("Custom"));
     chkTheme->setText(tr_str("Theme :"));
 
@@ -1268,6 +1333,7 @@ void SettingsDialog::retranslateUi()
      comboDisplayType->insertItem(tr_str("System"));
      comboDisplayType->insertItem(tr_str("Custom"));
      comboDisplayType->insertItem(tr_str("LCD"));
+     comboDisplayType->insertItem("Calculator");
      comboDisplayType->insertItem("Computo");
      comboDisplayType->insertItem("DigitalCounter7");
      comboDisplayType->insertItem("PocketCalculator");
@@ -1294,6 +1360,7 @@ void SettingsDialog::retranslateUi()
     chkBoldIcons->setText(tr_str("Bold icons"));
 
     // 7. Buttons
+    btnApply->setText(tr_str("Apply"));
     btnSaveAsTheme->setText(tr_str("Save as theme"));
     if (btnDeleteTheme) {
         TQToolTip::remove(btnDeleteTheme);
@@ -1302,6 +1369,20 @@ void SettingsDialog::retranslateUi()
     btnAbout->setText(tr_str("About"));
     btnClose->setText(tr_str("Close"));
     if (btnAboutClose) btnAboutClose->setText(tr_str("Close"));
+}
+
+void SettingsDialog::updateApplyButtonState()
+{
+    bool changed = false;
+    if (chkCustom->isChecked()) {
+        changed = true;
+    } else if (chkTheme->isChecked()) {
+        TQString currentTheme = comboTheme->currentText();
+        if (m_initMode == 1 || currentTheme != m_initTheme) {
+            changed = true;
+        }
+    }
+    btnApply->setEnabled(changed);
 }
 
 #include "settings_dialog.moc"

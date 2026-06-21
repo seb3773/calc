@@ -22,12 +22,14 @@ public:
     SettingsDialog(bool startInAboutMode = false, TQWidget *parent = 0, const char *name = 0);
     virtual ~SettingsDialog();
 
+signals:
+    void settingsApplied();
+
 private slots:
-    void slotClassicToggled(bool checked);
-    void slotClassicDarkToggled(bool checked);
+    void slotApplyClicked();
     void slotCustomToggled(bool checked);
     void slotThemeToggled(bool checked);
-    void slotThemeChanged(const TQString &themeName);
+    void slotThemeChanged(int index);
     void slotDisplayTypeChanged(int index);
     void slotSaveAsThemeClicked();
     void slotDeleteThemeClicked();
@@ -49,10 +51,12 @@ private:
     void populateThemesCombo();
     void loadThemeColors(const TQString &themeName);
     void retranslateUi();
+    void updateApplyButtonState();
+
+    int m_initMode;
+    TQString m_initTheme;
 
     // Appearance Checkboxes (Mutually Exclusive)
-    TQCheckBox *chkClassic;
-    TQCheckBox *chkClassicDark;
     TQCheckBox *chkCustom;
     TQCheckBox *chkTheme;
 
@@ -99,6 +103,7 @@ private:
     TQCheckBox *chkBoldIcons;
     TQPushButton *btnSaveAsTheme;
     TQPushButton *btnDeleteTheme;
+    TQPushButton *btnApply;
 
     // Language Selector
     TQComboBox *comboLanguage;
