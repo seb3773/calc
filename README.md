@@ -1,5 +1,7 @@
 # calc
 
+![Konqi scientific](about_calc.png)
+
 **a customizable windows 10/11 calculator clone for trinity desktop (TDE)**
 
 `calc` is a highly configurable, modern, and lightweight scientific calculator designed specifically for the Trinity Desktop Environment (TDE). 
