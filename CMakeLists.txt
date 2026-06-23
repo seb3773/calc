@@ -20,23 +20,9 @@ tde_setup_paths( )
 
 set(COMPRESS "zx0" CACHE STRING "Compression method (zx0, lz4 or zlib)")
 set(ZLIB_LIBS "")
-if(COMPRESS STREQUAL "zx0")
-  add_definitions(-DUSE_ZX0)
-  set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/zx0/zx0_decompress.c")
-  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/zx0")
-  set(ZLIB_LIBS "")
-elseif(COMPRESS STREQUAL "lz4")
-  add_definitions(-DUSE_LZ4)
-  set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/lz4/codec_lz4.c")
-  include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/lz4")
-  set(ZLIB_LIBS "")
-elseif(COMPRESS STREQUAL "zlib")
-  find_package(ZLIB REQUIRED)
-  set(ZLIB_LIBS ${ZLIB_LIBRARIES})
-  set(DECOMPRESSOR_SRC "")
-else()
-  message(FATAL_ERROR "Unknown compression method ${COMPRESS}. Must be zx0, lz4 or zlib.")
-endif()
+add_definitions(-DUSE_ZX0)
+set(DECOMPRESSOR_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/zx0/zx0_decompress.c")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/src/decompressors/zx0")
 
 include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
@@ -142,32 +128,56 @@ add_custom_command(
     COMMENT "Preparing asset pool"
 )
 
-# Host tool to compress assets
-add_executable(bin_compress
-    "${CMAKE_CURRENT_SOURCE_DIR}/scripts/bin_compress.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/lz4/lz4.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/lz4/lz4hc.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/lz4/lz4_compress_wrapper.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/zx0/compress.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/zx0/memory.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/zx0/optimize.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/zx0/zx0_compress_wrapper.c"
+# Host tool to compress assets (built from copied zx0em sources)
+set(ZX0EM_COMPRESSOR "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/binaries/zx0em_pack_x86_64_v4")
+if(EXISTS "${ZX0EM_COMPRESSOR}")
+    message(STATUS "Using precompiled optimized zx0em compressor: ${ZX0EM_COMPRESSOR}")
+    set(ZX0EM_COMPRESSOR_DEP "")
+else()
+    message(STATUS "Precompiled zx0em compressor not found, compiling from source")
+    set(ZX0EM_COMPRESSOR "$<TARGET_FILE:bin_compress>")
+    set(ZX0EM_COMPRESSOR_DEP bin_compress)
+endif()
+
+add_executable(bin_compress EXCLUDE_FROM_ALL
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/zx0em_pack.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/blob_builder.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/emit_header.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/png_decode.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/similarity.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/preprocess.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/text_bpe.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/ttf_strip.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/zx0/compress.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/zx0/optimize.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/zx0/memory.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/zx0/zx0_compress_wrapper.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/expand.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/matchfinder.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/shrink.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/libdivsufsort/lib/divsufsort.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/libdivsufsort/lib/divsufsort_utils.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/libdivsufsort/lib/sssort.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/libdivsufsort/lib/trsort.c"
 )
 target_include_directories(bin_compress PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/lz4"
-    "${CMAKE_CURRENT_SOURCE_DIR}/compressors/zx0"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/zx0"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/zx0em/salvador/src/libdivsufsort/include"
 )
+target_link_libraries(bin_compress m pthread)
 
 add_custom_command(
     OUTPUT
-        "${CMAKE_CURRENT_BINARY_DIR}/embedded_images_data.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/embedded_images_data.cpp"
-        "${CMAKE_CURRENT_BINARY_DIR}/embedded_icons.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/embedded_txt.h"
-        "${CMAKE_CURRENT_BINARY_DIR}/embedded_assets_compat.cpp"
-    COMMAND python3 "${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_assets.py" "${ASSET_POOL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" "$<TARGET_FILE:bin_compress>" "${COMPRESS}"
-    DEPENDS "${ASSET_POOL_DIR}/.copied" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_assets.py" bin_compress
+         "${CMAKE_CURRENT_BINARY_DIR}/embedded_images_data.h"
+         "${CMAKE_CURRENT_BINARY_DIR}/embedded_images_data.cpp"
+         "${CMAKE_CURRENT_BINARY_DIR}/embedded_icons.h"
+         "${CMAKE_CURRENT_BINARY_DIR}/embedded_fonts.h"
+         "${CMAKE_CURRENT_BINARY_DIR}/embedded_txt.h"
+         "${CMAKE_CURRENT_BINARY_DIR}/embedded_assets_compat.cpp"
+    COMMAND python3 "${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_assets.py" "${ASSET_POOL_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" "${ZX0EM_COMPRESSOR}" "${COMPRESS}"
+    DEPENDS "${ASSET_POOL_DIR}/.copied" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/build_assets.py" ${ZX0EM_COMPRESSOR_DEP}
     COMMENT "Compressing and packaging embedded assets"
 )
 

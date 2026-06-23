@@ -8,6 +8,7 @@
 #include <tdeconfig.h>
 #include <tdeglobal.h>
 #include <map>
+#include "zx0em_runtime.h"
 
 class IconUtils {
 private:
@@ -47,6 +48,17 @@ private:
     static std::map<CacheKey, TQPixmap>& cache() {
         static std::map<CacheKey, TQPixmap> instance;
         return instance;
+    }
+
+    static const zx0em_entry_t* findEntryByData(const unsigned char* data) {
+        if (!data) return nullptr;
+        for (int i = 0; i < ZX0EM_ENTRY_COUNT; i++) {
+            const zx0em_entry_t *e = &zx0em_entries[i];
+            if (zx0em_buf_ + e->offset == data) {
+                return e;
+            }
+        }
+        return nullptr;
     }
 
 public:
@@ -152,6 +164,84 @@ public:
         delete config;
     }
 
+    static TQImage loadImageRaw(const unsigned char* data, unsigned int len) {
+        TQImage img;
+        const zx0em_entry_t *e = findEntryByData(data);
+        if (e) {
+            int w = e->width;
+            int h = e->height;
+            int pixfmt = e->pixfmt;
+            const unsigned char *pixels = data;
+            
+            if (pixfmt == ZX0EM_PIXFMT_RGBA) {
+                img = TQImage(w, h, 32);
+                img.setAlphaBuffer(true);
+                for (int y = 0; y < h; ++y) {
+                    TQRgb *dest = (TQRgb*)img.scanLine(y);
+                    const unsigned char *src = pixels + y * w * 4;
+                    for (int x = 0; x < w; ++x) {
+                        dest[x] = tqRgba(src[x*4], src[x*4+1], src[x*4+2], src[x*4+3]);
+                    }
+                }
+            } else if (pixfmt == ZX0EM_PIXFMT_GRAY_ALPHA) {
+                img = TQImage(w, h, 32);
+                img.setAlphaBuffer(true);
+                for (int y = 0; y < h; ++y) {
+                    TQRgb *dest = (TQRgb*)img.scanLine(y);
+                    const unsigned char *src = pixels + y * w * 2;
+                    for (int x = 0; x < w; ++x) {
+                        unsigned char g = src[x*2];
+                        unsigned char a = src[x*2+1];
+                        dest[x] = tqRgba(g, g, g, a);
+                    }
+                }
+            } else if (pixfmt == ZX0EM_PIXFMT_PALETTE) {
+                img = TQImage(w, h, 32);
+                img.setAlphaBuffer(true);
+                const unsigned char *pal_data = zx0em_buf_ + e->offset;
+                int pal_count = pal_data[0];
+                const unsigned char *colors = pal_data + 1;
+                const unsigned char *indices = data + 1 + pal_count * 4;
+                for (int y = 0; y < h; ++y) {
+                    TQRgb *dest = (TQRgb*)img.scanLine(y);
+                    const unsigned char *src = indices + y * w;
+                    for (int x = 0; x < w; ++x) {
+                        int idx = src[x];
+                        int r = colors[idx*4];
+                        int g = colors[idx*4+1];
+                        int b = colors[idx*4+2];
+                        int a = colors[idx*4+3];
+                        dest[x] = tqRgba(r, g, b, a);
+                    }
+                }
+            } else if (pixfmt == ZX0EM_PIXFMT_1BIT) {
+                img = TQImage(w, h, 32);
+                img.setAlphaBuffer(true);
+                const unsigned char *pal_data = zx0em_buf_ + e->offset;
+                const unsigned char *colors = pal_data + 1;
+                const unsigned char *bits = data + 9;
+                unsigned int pitch = (w + 7) / 8;
+                for (int y = 0; y < h; ++y) {
+                    TQRgb *dest = (TQRgb*)img.scanLine(y);
+                    const unsigned char *src = bits + y * pitch;
+                    for (int x = 0; x < w; ++x) {
+                        int bit = (src[x / 8] >> (7 - (x % 8))) & 1;
+                        int r = colors[bit*4];
+                        int g = colors[bit*4+1];
+                        int b = colors[bit*4+2];
+                        int a = colors[bit*4+3];
+                        dest[x] = tqRgba(r, g, b, a);
+                    }
+                }
+            }
+        } else {
+            img.loadFromData(data, len, "PNG");
+        }
+        if (!img.hasAlphaBuffer()) img.setAlphaBuffer(true);
+        if (img.depth() != 32) img = img.convertDepth(32);
+        return img;
+    }
+
     static TQPixmap load(const unsigned char* data, unsigned int len, int w = -1, int h = -1, const TQColor &custom_color = TQColor()) {
         int icon_mode = 0;
         TQColor icon_color;
@@ -174,11 +264,7 @@ public:
             return c[k];
         }
 
-        TQImage img;
-        img.loadFromData(data, len, "PNG");
-        if (!img.hasAlphaBuffer()) img.setAlphaBuffer(true);
-        if (img.depth() != 32) img = img.convertDepth(32);
-        img.setAlphaBuffer(true);
+        TQImage img = loadImageRaw(data, len);
         
         if (icon_mode == 1) { // Invert
             if (img.depth() != 32) img = img.convertDepth(32);

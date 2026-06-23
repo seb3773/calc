@@ -101,8 +101,7 @@ public:
         }
         
         if (isChecked) {
-            TQImage img;
-            img.loadFromData(list_check_png, list_check_png_len, "PNG");
+            TQImage img = IconUtils::loadImageRaw(list_check_png, list_check_png_len);
             int checkW = (img.width() * 24) / img.height();
             m_checkIcon = IconUtils::load(list_check_png, list_check_png_len, checkW, 24);
         }
@@ -112,8 +111,7 @@ public:
         if (m_isChecked != checked) {
             m_isChecked = checked;
             if (m_isChecked && m_checkIcon.isNull()) {
-                TQImage img;
-                img.loadFromData(list_check_png, list_check_png_len, "PNG");
+                TQImage img = IconUtils::loadImageRaw(list_check_png, list_check_png_len);
                 int checkW = (img.width() * 24) / img.height();
                 m_checkIcon = IconUtils::load(list_check_png, list_check_png_len, checkW, 24);
             }
@@ -295,8 +293,7 @@ Calculator::Calculator(TQWidget *parent, const char *name)
 	// Detect color change
 	//connect(tdeApp,TQ_SIGNAL(tdedisplayPaletteChanged()), TQ_SLOT(set_colors()));
 
-	TQImage calcImg;
-	calcImg.loadFromData(calc_png, calc_png_len, "PNG");
+	TQImage calcImg = IconUtils::loadImageRaw(calc_png, calc_png_len);
 	setIcon(TQPixmap(calcImg));
 
 	calc_display = new DispLogic(central, "display"/*, actionCollection()*/);

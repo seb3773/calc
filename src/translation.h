@@ -35,7 +35,35 @@ public:
         tqt_embimg_init();
 
         s_map.clear();
-        if (translations_txt && translations_txt_len > 0) {
+        char *decoded_text = nullptr;
+        int len = 0;
+        const zx0em_entry_t *e = &zx0em_entries[ZX0EM_translations_txt];
+        if (e->type == ZX0EM_TYPE_TEXT_BPE) {
+            decoded_text = (char*)malloc(32768);
+            if (decoded_text) {
+                len = zx0em_decode_bpe(ZX0EM_translations_txt, decoded_text, 32768);
+            }
+        }
+
+        if (decoded_text && len > 0) {
+            TQString content = TQString::fromUtf8(decoded_text, len);
+            free(decoded_text);
+            TQStringList lines = TQStringList::split('\n', content);
+            for (TQStringList::Iterator it = lines.begin(); it != lines.end(); ++it) {
+                TQString line = (*it).stripWhiteSpace();
+                if (line.isEmpty()) continue;
+                
+                TQStringList parts = TQStringList::split('|', line, true);
+                if (parts.count() >= 7) {
+                    TQString key = parts[0];
+                    TQStringList langs;
+                    for (int i = 1; i <= 6; ++i) {
+                        langs.append(parts[i]);
+                    }
+                    s_map.insert(key, langs);
+                }
+            }
+        } else if (translations_txt && translations_txt_len > 0) {
             TQString content = TQString::fromUtf8((const char*)translations_txt, (int)translations_txt_len);
             TQStringList lines = TQStringList::split('\n', content);
             for (TQStringList::Iterator it = lines.begin(); it != lines.end(); ++it) {
