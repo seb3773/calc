@@ -217,20 +217,21 @@ public:
             } else if (pixfmt == ZX0EM_PIXFMT_1BIT) {
                 img = TQImage(w, h, 32);
                 img.setAlphaBuffer(true);
-                const unsigned char *pal_data = zx0em_buf_ + e->offset;
-                const unsigned char *colors = pal_data + 1;
-                const unsigned char *bits = data + 9;
+                const unsigned char *bits = data;
                 unsigned int pitch = (w + 7) / 8;
+                const unsigned char *alpha = data + pitch * h;
                 for (int y = 0; y < h; ++y) {
                     TQRgb *dest = (TQRgb*)img.scanLine(y);
-                    const unsigned char *src = bits + y * pitch;
+                    const unsigned char *src_val = bits + y * pitch;
+                    const unsigned char *src_alpha = alpha + y * pitch;
                     for (int x = 0; x < w; ++x) {
-                        int bit = (src[x / 8] >> (7 - (x % 8))) & 1;
-                        int r = colors[bit*4];
-                        int g = colors[bit*4+1];
-                        int b = colors[bit*4+2];
-                        int a = colors[bit*4+3];
-                        dest[x] = tqRgba(r, g, b, a);
+                        int bit_val = (src_val[x / 8] >> (7 - (x % 8))) & 1;
+                        int bit_alpha = (src_alpha[x / 8] >> (7 - (x % 8))) & 1;
+                        if (bit_alpha) {
+                            dest[x] = bit_val ? tqRgba(255, 255, 255, 255) : tqRgba(0, 0, 0, 255);
+                        } else {
+                            dest[x] = tqRgba(0, 0, 0, 0); // Transparent
+                        }
                     }
                 }
             }
