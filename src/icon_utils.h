@@ -228,7 +228,7 @@ public:
                         int bit_val = (src_val[x / 8] >> (7 - (x % 8))) & 1;
                         int bit_alpha = (src_alpha[x / 8] >> (7 - (x % 8))) & 1;
                         if (bit_alpha) {
-                            dest[x] = bit_val ? tqRgba(255, 255, 255, 255) : tqRgba(0, 0, 0, 255);
+                            dest[x] = bit_val ? tqRgba(0, 0, 0, 255) : tqRgba(255, 255, 255, 255);
                         } else {
                             dest[x] = tqRgba(0, 0, 0, 0); // Transparent
                         }
