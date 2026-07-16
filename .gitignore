@@ -2,3 +2,5 @@ build/
 _work/
 *.deb
 *.code-workspace
+*.AppImage
+
