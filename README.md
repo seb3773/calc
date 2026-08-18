@@ -117,6 +117,33 @@ make -j$(nproc)
 
 ---
 
+## Packaging & Distribution
+
+`calc` can be packaged in three distribution formats:
+
+### 1. Q4OS 1-Click Installer (`.qsi`)
+To build the graphical setup wizard installer for Q4OS / Trinity Desktop:
+```bash
+./build_qsi.sh
+```
+This produces `setup_tde-calc_<version>.qsi` at the project root. Users can double-click it in the file manager to install via the native graphical setup wizard, or run `sudo qsinst setup_tde-calc_<version>.qsi`.
+
+### 2. Debian Package (`.deb`)
+To build a standard `.deb` package:
+```bash
+./build_deb.sh
+```
+This generates `tde-calc_<version>_amd64.deb`.
+
+### 3. Portable AppImage (`.AppImage`)
+To generate a standalone portable AppImage bundling all required libraries:
+```bash
+./build_appimage.sh
+```
+This produces `tdecalc-x86_64.AppImage`.
+
+---
+
 ## Screenshots
 
 Click on any screenshot to view the full-size image.

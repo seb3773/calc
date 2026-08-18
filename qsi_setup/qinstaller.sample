@@ -1,0 +1,38 @@
+#***q4os*setup*config*header*do*not*delete*it***#
+# Configuration template for calc Q4OS Installer (.qsi)
+
+# Package name
+PK_NAME="tde-calc"
+
+# Application descriptive title
+APPNAME_DESC="calc - Scientific Calculator"
+
+# Application icon name
+APP_ICON="tdecalc"
+
+# Application version
+PK_VERS="1.0"
+
+# Installation method (2 = APT local with dependency resolution)
+SETUP_TYPE="2"
+
+# Debian package(s) to install
+INST_DEBS="tde-calc"
+
+# Directory paths (dynamically set to absolute paths by build_qsi.sh)
+DEBPCKS_DIR="deb_packages"
+TEMPLATES_DIR="setup_templates"
+OUT_DIR="output"
+
+# Shortcuts and desktop integration
+APPLNK_ENTRY="1"     # Create /usr/share/applications/calc.desktop
+DESKTOP_ENTRY="0"    # Do not clutter the user desktop
+MENU_ENTRY="1"       # Register in Start Menu
+
+# Target distributions and architectures
+DSTR_BASE="debian;ubuntu"
+DSTR_EDTN="bullseye;bookworm;trixie;jammy;noble"
+Q4VER_MIN="4.0"
+
+# Internet check (0 = disabled, self-contained package)
+CHK_INET="0"
