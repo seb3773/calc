@@ -1,0 +1,18 @@
+Package: tde-calc
+Version: 1.0
+Architecture: amd64
+Maintainer: seb3773
+Depends: libgmp10, libfontconfig1, libx11-6, libtqt-mt | libtqt3-mt
+Filename: pool/main/t/tde-calc/tde-calc_1.0_amd64.deb
+Size: 225588
+MD5sum: 4f683eb3672daebbc7c3934767ec05e0
+SHA1: 976d97d82b7bab158c507e761214f9c70beca62a
+SHA256: 551277026d731e4f68f95f2754ff1452366efe27c037a3f2da9fd889c8f44692
+Section: utils
+Priority: optional
+Description: A customizable Windows 10/11 calculator clone for Trinity Desktop (TDE)
+ A highly configurable, modern, and lightweight scientific calculator
+ designed specifically for the Trinity Desktop Environment (TDE).
+ Replicates all mathematical functions and layout behaviors of the
+ Windows 10/11 calculator, with deep customizability.
+
