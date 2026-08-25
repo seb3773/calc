@@ -117,16 +117,34 @@ make -j$(nproc)
 
 ---
 
+## Installation & APT Repository
+
+### Official APT Repository (Automated Updates)
+
+You can add the official `calc` repository to receive regular updates automatically via `apt`:
+
+```bash
+echo "deb [trusted=yes] https://seb3773.github.io/calc/ stable main" | sudo tee /etc/apt/sources.list.d/tde-calc.list
+sudo apt update
+sudo apt install tde-calc
+```
+
+The repository and direct download portal is available online at: **[https://seb3773.github.io/calc/](https://seb3773.github.io/calc/)**
+
+---
+
 ## Packaging & Distribution
 
-`calc` can be packaged in three distribution formats:
+`calc` can be built and distributed in multiple formats:
 
 ### 1. Q4OS 1-Click Installer (`.qsi`)
 To build the graphical setup wizard installer for Q4OS / Trinity Desktop:
 ```bash
 ./build_qsi.sh
 ```
-This produces `setup_tde-calc_<version>.qsi` at the project root. Users can double-click it in the file manager to install via the native graphical setup wizard, or run `sudo qsinst setup_tde-calc_<version>.qsi`.
+This produces `setup_tde-calc_<version>.qsi` at the project root. Users can double-click it in the file manager to install via the native graphical setup wizard (or run `sudo qsinst setup_tde-calc_<version>.qsi`).
+> [!NOTE]
+> The `.qsi` installer automatically configures the APT repository during installation to ensure the application stays updated.
 
 ### 2. Debian Package (`.deb`)
 To build a standard `.deb` package:
@@ -141,6 +159,12 @@ To generate a standalone portable AppImage bundling all required libraries:
 ./build_appimage.sh
 ```
 This produces `tdecalc-x86_64.AppImage`.
+
+### 4. Updating the GitHub Pages APT Repository
+To update the online repository and landing page on GitHub Pages (`gh-pages` branch):
+```bash
+./update_apt_repo.sh
+```
 
 ---
 
