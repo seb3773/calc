@@ -134,8 +134,11 @@ fi
 # Create .nojekyll to prevent GitHub Pages Jekyll processing
 touch "$PAGES_DIR/.nojekyll"
 
-# Find latest file names for HTML download buttons
+# Find latest file names and version for HTML download buttons
 LATEST_DEB_NAME=$(basename "${DEB_FILES[0]}")
+LATEST_VERSION=$(dpkg-deb -f "${DEB_FILES[0]}" Version 2>/dev/null || echo "1.0")
+[ -z "$LATEST_VERSION" ] && LATEST_VERSION="1.0"
+
 LATEST_QSI_NAME=""
 if [ ${#QSI_FILES[@]} -gt 0 ]; then
     LATEST_QSI_NAME=$(basename "${QSI_FILES[0]}")
@@ -215,6 +218,18 @@ cat << EOF > "$PAGES_DIR/index.html"
     }
     .badge-purple {
       background: linear-gradient(135deg, #6366f1, #a855f7);
+    }
+    .version-pill {
+      display: inline-block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      padding: 2px 12px;
+      border-radius: 20px;
+      vertical-align: middle;
+      margin-left: 8px;
     }
     h1 {
       font-size: 2.4rem;
@@ -329,11 +344,11 @@ cat << EOF > "$PAGES_DIR/index.html"
       <img src="about_calc.png" alt="calc logo" class="logo">
       <br>
       <div class="badge-group">
-        <div class="badge">Official APT Repository</div>
+        <div class="badge">Official APT Repository • v${LATEST_VERSION}</div>
         <div class="badge badge-green">TDE &amp; Linux Native</div>
         <div class="badge badge-purple">x86_64</div>
       </div>
-      <h1>calc</h1>
+      <h1>calc <span class="version-pill">v${LATEST_VERSION}</span></h1>
       <p class="lead">A customizable Windows 10/11 scientific calculator clone designed for Trinity Desktop Environment (TDE) &amp; Linux.</p>
     </header>
 
@@ -351,13 +366,13 @@ sudo apt install tde-calc</code></pre>
     </div>
 
     <div class="card">
-      <h2>📦 Method 2: Standalone &amp; Direct Downloads</h2>
+      <h2>📦 Method 2: Direct Package Downloads (v${LATEST_VERSION})</h2>
       <p style="color: var(--text-muted); margin-bottom: 12px;">
         Choose the format best suited for your setup:
       </p>
       <div class="btn-group">
-        ${LATEST_QSI_NAME:+<a class="btn btn-primary" href="${LATEST_QSI_NAME}">📥 Download Q4OS Installer (.qsi)</a>}
-        <a class="btn btn-secondary" href="pool/main/t/tde-calc/${LATEST_DEB_NAME}">📦 Download Debian Package (.deb)</a>
+        ${LATEST_QSI_NAME:+<a class="btn btn-primary" href="${LATEST_QSI_NAME}">📥 Download Q4OS Installer v${LATEST_VERSION} (.qsi)</a>}
+        <a class="btn btn-secondary" href="pool/main/t/tde-calc/${LATEST_DEB_NAME}">📦 Download Debian Package v${LATEST_VERSION} (.deb)</a>
         ${LATEST_APPIMAGE_NAME:+<a class="btn btn-secondary" href="${LATEST_APPIMAGE_NAME}">🐧 Download AppImage (Portable)</a>}
       </div>
       <p style="font-size: 0.85rem; color: #64748b; margin-top: 14px;">
