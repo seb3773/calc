@@ -1,24 +1,24 @@
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Thu, 27 Aug 2026 09:19:21 +0000
+Date: Thu, 27 Aug 2026 10:13:52 +0000
 Description: APT Repository for calc / tde-calc (Trinity Desktop & Linux)
 Label: calc APT Repository
 Origin: calc
 Suite: stable
 MD5Sum:
- dfa9568915503ad6ef8a2e0b4056d9d3              221 Release
+ 54fb2a297a20b38112abaa3fa0f398e7              221 Release
  7bb30db34f6225838438e432b7774e09              744 main/binary-amd64/Packages
- dff41b03db34b98d94228a279976035f              508 main/binary-amd64/Packages.gz
+ 4d0e72295e052f1520f54e482184ed18              508 main/binary-amd64/Packages.gz
 SHA1:
- 09c2c94bc8f33109d3d74e7ac5868c67e073253d              221 Release
+ 6750718bd042f91aebce410785096ffbbe501fe8              221 Release
  df1f990ddc7d2845f01ee807841bfe56d08a0149              744 main/binary-amd64/Packages
- 736b04ff5fcc45bf373c9393f9c952b51744c2d4              508 main/binary-amd64/Packages.gz
+ 22ffff199e35e2763476c9ae79747190f1c403da              508 main/binary-amd64/Packages.gz
 SHA256:
- 64d123e78d9950ab57fb4f0578e2046d4454376a6900a7b3b1b06e8ddcf17723              221 Release
+ 2c1ccac2672d9f5f78c83bf4c1f41295c7e9ef0689e4b52496f12d49a27e62e4              221 Release
  1866065a35b5de092990925a64a16e35f44d963098dc217de2c215d4ee09ead0              744 main/binary-amd64/Packages
- 5534e6ac7cfab9f1ea097563009196c7448b5020b5b2aa972f76f930ee62c110              508 main/binary-amd64/Packages.gz
+ 77cd2731ce097c13fd8001d21c2670d18ee2222598079c2ea790d5cb9c85db59              508 main/binary-amd64/Packages.gz
 SHA512:
- fb5046df1a0e3074b060533579fd75f86cd8611f403da59b1f103e32203ee47dba69198c9c816f2fb32affcc80cdac4924ba442956aeaa28453f15297b2818c0              221 Release
+ 6df8153d9ef2a5722138f51197a11dde4db879d25f95941751c3aa64a0936d24c8c5773db2c4bae83bfa23d8f2e01aedc9bb190e6f15d09e4562216d7bbe4fdc              221 Release
  71bbe2edfc84d5e8c5668181f490a42bafa557b4b3970c34f0ea878fa1b8148dac9df9a8212cd49621868cc61e015ac79ff9272a7c8c4407e427600c9da17abe              744 main/binary-amd64/Packages
- 79684f315f5449804b2ed12a6e7e9246559a904b8a960b6a5dba68133ed9f39516a88d49bd0615d948cdfc2f9e6a3e41c4c58aeb9359740159ee2ded8c54e21d              508 main/binary-amd64/Packages.gz
+ b48029eb24fae4311d4119a45f9169440e7296254431b3fb5109517b78373108526eebbaa612468c44761866552ecbaa795a2587900000b324129bd8c07ff68f              508 main/binary-amd64/Packages.gz
