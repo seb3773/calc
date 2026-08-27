@@ -25,6 +25,38 @@ need_cmd mkdir
 # Make sure build dir exists
 mkdir -p -- "$BUILD_DIR"
 
+# Version handling
+VERSION_ARG=""
+for arg in "$@"; do
+    if [ -z "$VERSION_ARG" ] && [ "${arg#-}" = "$arg" ]; then
+        VERSION_ARG="$arg"
+    fi
+done
+
+if [ -n "$VERSION_ARG" ]; then
+    APP_VERSION="$VERSION_ARG"
+elif [ -z "${APP_VERSION:-}" ]; then
+    if [ -f "$SRC_ROOT/src/version.h" ]; then
+        APP_VERSION=$(grep '#define CALCVERSION' "$SRC_ROOT/src/version.h" 2>/dev/null | sed -E 's/.*"([^"]+)".*/\1/' || echo "1.0")
+    else
+        APP_VERSION="1.0"
+    fi
+fi
+[ -z "$APP_VERSION" ] && APP_VERSION="1.0"
+
+echo "info: version target is $APP_VERSION"
+
+# Update src/version.h
+echo "info: updating version header (src/version.h)..."
+cat <<EOF > "$SRC_ROOT/src/version.h"
+#ifndef CALC_VERSION_H
+#define CALC_VERSION_H
+
+#define CALCVERSION "$APP_VERSION"
+
+#endif // CALC_VERSION_H
+EOF
+
 # Clean and Build the binary using the existing build.sh script
 if [ "${NO_BUILD:-0}" -eq 0 ]; then
 	echo "info: building kcalc in release mode..."

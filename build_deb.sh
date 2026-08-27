@@ -4,8 +4,47 @@
 set -e
 
 PACKAGE_NAME="tde-calc"
-VERSION="1.0"
 ARCH="amd64"
+
+VERSION_ARG=""
+NO_REBUILD=0
+CLEAN_BUILD=0
+
+for arg in "$@"; do
+    if [ "$arg" = "--no-rebuild" ] || [ "$arg" = "-n" ]; then
+        NO_REBUILD=1
+    elif [ "$arg" = "--clean" ] || [ "$arg" = "-c" ]; then
+        CLEAN_BUILD=1
+    elif [ -z "$VERSION_ARG" ] && [ "${arg#-}" = "$arg" ]; then
+        VERSION_ARG="$arg"
+    fi
+done
+
+if [ -n "$VERSION_ARG" ]; then
+    VERSION="$VERSION_ARG"
+elif [ -n "$APP_VERSION" ]; then
+    VERSION="$APP_VERSION"
+elif [ -f "src/version.h" ]; then
+    VERSION=$(grep '#define CALCVERSION' src/version.h 2>/dev/null | sed -E 's/.*"([^"]+)".*/\1/' || echo "1.0")
+else
+    VERSION="1.0"
+fi
+
+[ -z "$VERSION" ] && VERSION="1.0"
+
+echo "=== Version Target: $VERSION ==="
+
+# Update src/version.h
+echo "=== Updating version header (src/version.h) ==="
+cat <<EOF > "src/version.h"
+#ifndef CALC_VERSION_H
+#define CALC_VERSION_H
+
+#define CALCVERSION "$VERSION"
+
+#endif // CALC_VERSION_H
+EOF
+
 BUILD_DIR="${PACKAGE_NAME}_${VERSION}_${ARCH}"
 
 echo "=== Preparing Debian Package Build Directory ==="
@@ -14,9 +53,9 @@ rm -rf "$BUILD_DIR"
 rm -f "${BUILD_DIR}.deb"
 
 # Ensure binary is compiled (ZX0 mode)
-if [ "$1" = "--no-rebuild" ] || [ "$1" = "-n" ]; then
+if [ "$NO_REBUILD" -eq 1 ]; then
     echo "=== Skipping compilation as requested ==="
-elif [ "$1" = "--clean" ] || [ "$1" = "-c" ]; then
+elif [ "$CLEAN_BUILD" -eq 1 ]; then
     echo "=== Compiling calc in Release mode (clean build) ==="
     ./build.sh clean
     ./build.sh

@@ -1,5 +1,6 @@
 #include "settings_dialog.h"
 #include "translation.h"
+#include "version.h"
 #include <tdefontrequester.h>
 #include <tqobjectlist.h>
 #include "icon_utils.h"
@@ -402,7 +403,16 @@ SettingsDialog::SettingsDialog(bool startInAboutMode, TQWidget *parent, const ch
     lblTitle->setAlignment(AlignHCenter);
     textLay->addWidget(lblTitle);
 
-    textLay->addSpacing(5);
+    textLay->addSpacing(2);
+
+    TQLabel *lblVersion = new TQLabel(TQString("Version %1").arg(CALCVERSION), aboutWidget);
+    TQFont fVersion = lblVersion->font();
+    fVersion.setPixelSize(14);
+    lblVersion->setFont(fVersion);
+    lblVersion->setAlignment(AlignHCenter);
+    textLay->addWidget(lblVersion);
+
+    textLay->addSpacing(6);
 
     TQLabel *lblSubtitle = new TQLabel("A customizable calculator for Trinity DE", aboutWidget, "A customizable calculator for Trinity DE");
     TQFont fSub = lblSubtitle->font();

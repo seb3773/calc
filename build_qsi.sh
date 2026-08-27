@@ -31,12 +31,19 @@ mkdir -p "$DEB_DIR" "$OUT_DIR" "$TEMPLATES_DIR"
 rm -f "$DEB_DIR"/*.deb "$OUT_DIR"/*.qsi
 
 # 4. Build or find existing Debian package (.deb)
-LATEST_DEB=$(ls -t "$SCRIPT_DIR"/*.deb "$SCRIPT_DIR"/build/*.deb 2>/dev/null | head -n 1)
+if [ -n "$1" ]; then
+    if [ -x "$SCRIPT_DIR/build_deb.sh" ]; then
+        echo "[Info] Building Debian package for target version $APP_VERSION..."
+        "$SCRIPT_DIR/build_deb.sh" "$APP_VERSION"
+    fi
+fi
+
+LATEST_DEB=$(ls -t "$SCRIPT_DIR"/tde-calc_${APP_VERSION}_*.deb "$SCRIPT_DIR"/*.deb "$SCRIPT_DIR"/build/*.deb 2>/dev/null | head -n 1)
 if [ -z "$LATEST_DEB" ] || [ ! -f "$LATEST_DEB" ]; then
     if [ -x "$SCRIPT_DIR/build_deb.sh" ]; then
-        echo "[Info] No .deb package found. Building Debian package..."
-        "$SCRIPT_DIR/build_deb.sh"
-        LATEST_DEB=$(ls -t "$SCRIPT_DIR"/*.deb "$SCRIPT_DIR"/build/*.deb 2>/dev/null | head -n 1)
+        echo "[Info] No matching .deb package found. Building Debian package..."
+        "$SCRIPT_DIR/build_deb.sh" "$APP_VERSION"
+        LATEST_DEB=$(ls -t "$SCRIPT_DIR"/tde-calc_${APP_VERSION}_*.deb "$SCRIPT_DIR"/*.deb "$SCRIPT_DIR"/build/*.deb 2>/dev/null | head -n 1)
     fi
 fi
 
