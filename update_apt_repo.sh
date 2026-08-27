@@ -35,7 +35,10 @@ if [ ${#DEB_FILES[@]} -eq 0 ]; then
     if [ -x "$REPO_DIR/build_deb.sh" ]; then
         "$REPO_DIR/build_deb.sh"
         shopt -s nullglob
-        DEB_FILES=($(ls -t "$REPO_DIR"/tde-calc_*.deb "$REPO_DIR"/calc_*.deb "$REPO_DIR"/*.deb 2>/dev/null || true))
+        DEB_FILES=($(ls -t "$REPO_DIR"/tde-calc_*.deb "$REPO_DIR"/calc_*.deb 2>/dev/null || true))
+        if [ ${#DEB_FILES[@]} -eq 0 ]; then
+            DEB_FILES=($(ls -t "$REPO_DIR"/*.deb 2>/dev/null || true))
+        fi
         shopt -u nullglob
     fi
 fi
@@ -122,13 +125,16 @@ apt-ftparchive \
   -o APT::FTPArchive::Release::Description="APT Repository for calc / tde-calc (Trinity Desktop & Linux)" \
   release "$PAGES_DIR/dists/stable" > "$PAGES_DIR/dists/stable/Release"
 
-# Copy assets (about image, favicon, etc.)
+# Copy assets (about image, favicon, screenshots, etc.)
 if [ -f "$REPO_DIR/about_calc.png" ]; then
     cp -a "$REPO_DIR/about_calc.png" "$PAGES_DIR/"
 fi
 if [ -f "$REPO_DIR/icons/calc.png" ]; then
     cp -a "$REPO_DIR/icons/calc.png" "$PAGES_DIR/favicon.png"
     cp -a "$REPO_DIR/icons/calc.png" "$PAGES_DIR/calc.png"
+fi
+if [ -d "$REPO_DIR/screenshots" ]; then
+    cp -ra "$REPO_DIR/screenshots" "$PAGES_DIR/"
 fi
 
 # Create .nojekyll to prevent GitHub Pages Jekyll processing
@@ -154,21 +160,30 @@ cat << EOF > "$PAGES_DIR/index.html"
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>calc - APT Repository &amp; Downloads</title>
+  <title>calc v${LATEST_VERSION} - APT Repository &amp; Downloads</title>
   <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="description" content="Official APT Repository and download portal for calc - A customizable Windows 10/11 scientific calculator clone for Trinity Desktop Environment (TDE).">
   <style>
     :root {
-      --bg: #0f172a;
-      --card-bg: #1e293b;
-      --accent: #38bdf8;
-      --accent-grad: linear-gradient(135deg, #0284c7, #38bdf8);
-      --text: #f1f5f9;
+      --bg: #12141a;
+      --card-bg: #1c1f2b;
+      --card-hover: #222738;
+      --accent: #3a86ff;
+      --accent-grad: linear-gradient(135deg, #3a86ff, #00f2fe);
+      --text: #e2e8f0;
       --text-muted: #94a3b8;
-      --code-bg: #0b1120;
-      --border: #334155;
-      --highlight: #22c55e;
+      --code-bg: #0f1117;
+      --border: #2e364f;
+      --radius: 12px;
+      --radius-sm: 8px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg);
@@ -176,36 +191,42 @@ cat << EOF > "$PAGES_DIR/index.html"
       line-height: 1.6;
       padding: 40px 20px;
     }
+
     .container {
-      max-width: 860px;
+      max-width: 840px;
       margin: 0 auto;
     }
+
     header {
       text-align: center;
       margin-bottom: 40px;
     }
+
     .logo {
-      max-width: 140px;
+      max-width: 130px;
       height: auto;
-      margin-bottom: 18px;
-      filter: drop-shadow(0 8px 24px rgba(56, 189, 248, 0.35));
+      margin-bottom: 16px;
+      filter: drop-shadow(0 8px 24px rgba(58, 134, 255, 0.45));
       border-radius: 18px;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+
     .logo:hover {
       transform: scale(1.06) rotate(1deg);
     }
+
     .badge-group {
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
+
     .badge {
       display: inline-block;
-      padding: 5px 14px;
-      font-size: 0.82rem;
+      padding: 4px 14px;
+      font-size: 0.85rem;
       font-weight: 600;
       color: #fff;
       background: var(--accent-grad);
@@ -213,12 +234,15 @@ cat << EOF > "$PAGES_DIR/index.html"
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
+
     .badge-green {
       background: linear-gradient(135deg, #15803d, #22c55e);
     }
+
     .badge-purple {
       background: linear-gradient(135deg, #6366f1, #a855f7);
     }
+
     .version-pill {
       display: inline-block;
       font-size: 1.1rem;
@@ -231,111 +255,277 @@ cat << EOF > "$PAGES_DIR/index.html"
       vertical-align: middle;
       margin-left: 8px;
     }
+
     h1 {
       font-size: 2.4rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-      letter-spacing: -0.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
     p.lead {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--text-muted);
       max-width: 680px;
       margin: 0 auto;
     }
+
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 26px;
+      border-radius: var(--radius);
+      padding: 24px;
       margin-bottom: 24px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
+
     h2 {
-      font-size: 1.35rem;
-      margin-bottom: 16px;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 10px;
       color: #fff;
     }
+
+    .code-container {
+      position: relative;
+      margin-top: 10px;
+    }
+
     pre {
       background: var(--code-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 20px;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      padding-right: 80px;
       overflow-x: auto;
-      font-family: "JetBrains Mono", "Fira Code", Consolas, "Courier New", monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 0.92rem;
       color: #38bdf8;
-      margin-bottom: 14px;
+      line-height: 1.6;
     }
+
+    .copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Downloads Grid */
+    .downloads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .download-card {
+      background: #141722;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .download-card:hover {
+      transform: translateY(-2px);
+      border-color: #38bdf8;
+      background: var(--card-hover);
+    }
+
+    .download-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .download-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .download-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: rgba(58, 134, 255, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(58, 134, 255, 0.3);
+    }
+
+    .download-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      flex-grow: 1;
+    }
+
+    .btn-download {
+      background: #1e293b;
+      color: #38bdf8;
+      border: 1px solid #334155;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-download:hover {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 16px;
       margin-top: 14px;
     }
+
     .feature-item {
-      background: var(--code-bg);
+      background: #141722;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 18px;
+      border-radius: var(--radius-sm);
+      padding: 16px;
     }
-    .feature-item h3 {
-      font-size: 1rem;
-      color: #38bdf8;
+
+    .feature-icon {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      display: inline-block;
+    }
+
+    .feature-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #ffffff;
       margin-bottom: 4px;
     }
-    .feature-item p {
-      font-size: 0.88rem;
+
+    .feature-text {
+      font-size: 0.85rem;
       color: var(--text-muted);
+      line-height: 1.45;
     }
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 18px;
+
+    /* Screenshots gallery */
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
     }
-    .btn {
-      display: inline-flex;
+
+    .screenshot-thumb {
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      background: #141722;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      aspect-ratio: 16 / 10;
+    }
+
+    .screenshot-thumb:hover {
+      transform: scale(1.03);
+      border-color: #38bdf8;
+    }
+
+    .screenshot-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Modal Lightbox */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
       align-items: center;
-      gap: 8px;
-      padding: 12px 22px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
+      justify-content: center;
+      padding: 20px;
     }
-    .btn-primary {
-      background: var(--accent-grad);
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+
+    .modal.active {
+      display: flex;
     }
-    .btn-primary:hover {
-      opacity: 0.92;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
-    }
-    .btn-secondary {
-      background: var(--code-bg);
-      color: var(--text);
+
+    .modal img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: var(--radius-sm);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
       border: 1px solid var(--border);
     }
-    .btn-secondary:hover {
-      background: #1e293b;
-      border-color: #475569;
-      transform: translateY(-2px);
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      font-weight: bold;
     }
+
     footer {
       text-align: center;
-      margin-top: 45px;
-      font-size: 0.9rem;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
       color: var(--text-muted);
+      font-size: 0.95rem;
     }
-    footer a { color: var(--accent); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
   </style>
 </head>
 <body>
@@ -344,77 +534,205 @@ cat << EOF > "$PAGES_DIR/index.html"
       <img src="about_calc.png" alt="calc logo" class="logo">
       <br>
       <div class="badge-group">
-        <div class="badge">Official APT Repository • v${LATEST_VERSION}</div>
+        <div class="badge">Official APT Repository</div>
         <div class="badge badge-green">TDE &amp; Linux Native</div>
         <div class="badge badge-purple">x86_64</div>
       </div>
       <h1>calc <span class="version-pill">v${LATEST_VERSION}</span></h1>
-      <p class="lead">A customizable Windows 10/11 scientific calculator clone designed for Trinity Desktop Environment (TDE) &amp; Linux.</p>
+      <p class="lead">A customizable, modern, and lightweight Windows 10/11 scientific calculator clone for Trinity Desktop (TDE) &amp; Linux.</p>
     </header>
 
+    <!-- Method 1: APT Repository -->
     <div class="card">
-      <h2>🚀 Method 1: Add the APT Repository (Recommended)</h2>
-      <p style="margin-bottom: 14px; color: var(--text-muted);">
-        Add the official repository to your system to receive regular automated updates via <code>apt</code>:
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M4 17l6-6-6-6M12 19h8"/></svg>
+        Method 1: Add the APT Repository (Recommended)
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Add the official repository to receive regular automated updates via <code>apt</code>:
       </p>
-      <pre><code>echo "deb [trusted=yes] https://seb3773.github.io/calc/ stable main" | sudo tee /etc/apt/sources.list.d/tde-calc.list
+      <div class="code-container">
+        <button class="copy-btn" onclick="copyCode('apt-code', this)">Copy</button>
+        <pre id="apt-code"><code>echo "deb [trusted=yes] https://seb3773.github.io/calc/ stable main" | sudo tee /etc/apt/sources.list.d/tde-calc.list
 sudo apt update
 sudo apt install tde-calc</code></pre>
-      <p style="font-size: 0.88rem; color: var(--text-muted);">
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 10px;">
         Compatible with Q4OS, Debian, Devuan, Ubuntu, Linux Mint and all Debian-based distributions.
       </p>
     </div>
 
+    <!-- Method 2: Direct Packages -->
     <div class="card">
-      <h2>📦 Method 2: Direct Package Downloads (v${LATEST_VERSION})</h2>
-      <p style="color: var(--text-muted); margin-bottom: 12px;">
-        Choose the format best suited for your setup:
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Method 2: Direct Package Downloads (v${LATEST_VERSION})
+      </h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Choose the package format best suited for your distribution:
       </p>
-      <div class="btn-group">
-        ${LATEST_QSI_NAME:+<a class="btn btn-primary" href="${LATEST_QSI_NAME}">📥 Download Q4OS Installer v${LATEST_VERSION} (.qsi)</a>}
-        <a class="btn btn-secondary" href="pool/main/t/tde-calc/${LATEST_DEB_NAME}">📦 Download Debian Package v${LATEST_VERSION} (.deb)</a>
-        ${LATEST_APPIMAGE_NAME:+<a class="btn btn-secondary" href="${LATEST_APPIMAGE_NAME}">🐧 Download AppImage (Portable)</a>}
+
+      <div class="downloads-grid">
+        ${LATEST_QSI_NAME:+<div class="download-card">
+          <div class="download-header">
+            <span class="download-title">Q4OS Installer (.qsi)</span>
+            <span class="download-tag">Q4OS 1-Click</span>
+          </div>
+          <p class="download-desc">Graphical one-click installer designed specifically for Q4OS Trinity desktop.</p>
+          <a href="${LATEST_QSI_NAME}" class="btn-download">
+            Download .qsi
+          </a>
+        </div>}
+
+        <div class="download-card">
+          <div class="download-header">
+            <span class="download-title">Debian / TDE (.deb)</span>
+            <span class="download-tag">Recommended</span>
+          </div>
+          <p class="download-desc">Standard dynamically linked build for Trinity Desktop / Debian-based systems.</p>
+          <a href="pool/main/t/tde-calc/${LATEST_DEB_NAME}" class="btn-download">
+            Download .deb
+          </a>
+        </div>
+
+        ${LATEST_APPIMAGE_NAME:+<div class="download-card">
+          <div class="download-header">
+            <span class="download-title">Standalone Portable (.AppImage)</span>
+            <span class="download-tag">Universal</span>
+          </div>
+          <p class="download-desc">Self-contained portable package with bundled libraries (runs on any Linux distro).</p>
+          <a href="${LATEST_APPIMAGE_NAME}" class="btn-download">
+            Download AppImage
+          </a>
+        </div>}
       </div>
-      <p style="font-size: 0.85rem; color: #64748b; margin-top: 14px;">
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 16px;">
         * Note: The Q4OS installer (.qsi) automatically configures the APT repository during installation for future updates.
       </p>
     </div>
 
+    <!-- Key Features -->
     <div class="card">
-      <h2>✨ Key Features</h2>
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Key Capabilities &amp; Features
+      </h2>
+
       <div class="features-grid">
         <div class="feature-item">
-          <h3>📐 Multiple Layout Modes</h3>
-          <p>Standard, Scientific, Programmer (HEX/DEC/OCT/BIN &amp; bit toggles), Date Calculation, and Statistics.</p>
+          <span class="feature-icon">📐</span>
+          <div class="feature-title">Multiple Layout Modes</div>
+          <div class="feature-text">Standard, Scientific, Programmer (HEX/DEC/OCT/BIN &amp; bit toggles), Date Calculation, and Statistics.</div>
         </div>
+
         <div class="feature-item">
-          <h3>🔄 Unit Conversions</h3>
-          <p>Comprehensive converter for Volume, Length, Weight/Mass, Temperature, Energy, Area, and Speed.</p>
+          <span class="feature-icon">🔄</span>
+          <div class="feature-title">Unit Conversions</div>
+          <div class="feature-text">Comprehensive converter for Volume, Length, Weight/Mass, Temperature, Energy, Area, and Speed.</div>
         </div>
+
         <div class="feature-item">
-          <h3>📜 Interactive History</h3>
-          <p>Visual list of past calculations and results with memory recall and expression recovery.</p>
+          <span class="feature-icon">📜</span>
+          <div class="feature-title">Interactive History</div>
+          <div class="feature-text">Visual list of past calculations and results with memory recall and expression recovery.</div>
         </div>
+
         <div class="feature-item">
-          <h3>⚡ Arbitrary-Precision Math</h3>
-          <p>GNU Multiple Precision Arithmetic Library (GMP) backend for accurate high-precision arithmetic.</p>
+          <span class="feature-icon">⚡</span>
+          <div class="feature-title">Arbitrary-Precision Math</div>
+          <div class="feature-text">GNU Multiple Precision Arithmetic Library (GMP) backend for accurate high-precision arithmetic.</div>
         </div>
+
         <div class="feature-item">
-          <h3>🚀 Zero-Lag Instant Startup</h3>
-          <p>Embedded pre-decoded raw pixel pipeline with ultra-fast ZX0 in-memory decompression.</p>
+          <span class="feature-icon">🚀</span>
+          <div class="feature-title">Zero-Lag Instant Startup</div>
+          <div class="feature-text">Embedded pre-decoded raw pixel pipeline with ultra-fast ZX0 in-memory decompression.</div>
         </div>
+
         <div class="feature-item">
-          <h3>🎨 Deep Customizability</h3>
-          <p>Dark/Light themes, custom and LCD fonts, icon styles (Default, Inverted, Color), and layout borders.</p>
+          <span class="feature-icon">🎨</span>
+          <div class="feature-title">Deep Customizability</div>
+          <div class="feature-text">Dark/Light themes, custom and LCD fonts, icon styles (Default, Inverted, Color), and layout borders.</div>
         </div>
       </div>
     </div>
 
+    <!-- Screenshots -->
+    <div class="card">
+      <h2>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        Screenshots
+      </h2>
+      <div class="screenshots-grid">
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_1.jpg')">
+          <img src="screenshots/screenshot_calc_1.jpg" alt="Standard Mode">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_2.jpg')">
+          <img src="screenshots/screenshot_calc_2.jpg" alt="Scientific Mode">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_3.jpg')">
+          <img src="screenshots/screenshot_calc_3.jpg" alt="Programmer Mode">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_4.jpg')">
+          <img src="screenshots/screenshot_calc_4.jpg" alt="Date Calculation">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_5.jpg')">
+          <img src="screenshots/screenshot_calc_5.jpg" alt="Unit Converter">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_6.jpg')">
+          <img src="screenshots/screenshot_calc_6.jpg" alt="History Window">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_7.jpg')">
+          <img src="screenshots/screenshot_calc_7.jpg" alt="Dark Theme">
+        </div>
+        <div class="screenshot-thumb" onclick="openModal('screenshots/screenshot_calc_8.jpg')">
+          <img src="screenshots/screenshot_calc_8.jpg" alt="Settings &amp; Fonts">
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
-      <p>Source Code &amp; Issue Tracker: <a href="https://github.com/seb3773/calc" target="_blank">github.com/seb3773/calc</a></p>
-      <p style="margin-top: 6px;">Developed with ❤️ for the Trinity Desktop Environment (TDE) &amp; Linux community.</p>
+      <p>Source Code &amp; Issue Tracker: <a href="https://github.com/seb3773/calc" target="_blank" rel="noopener">github.com/seb3773/calc</a></p>
+      <p style="margin-top: 6px;">Developed with ❤️ for the Trinity Desktop Environment community.</p>
+      <p class="footer-links">
+        <a href="http://trinitydesktop.org/" target="_blank" rel="noopener">http://trinitydesktop.org/</a> &bull; 
+        <a href="https://www.q4os.org/" target="_blank" rel="noopener">https://www.q4os.org/</a> &bull; 
+        <a href="https://www.q4os.org/forum/index.php" target="_blank" rel="noopener">https://www.q4os.org/forum/index.php</a>
+      </p>
     </footer>
   </div>
+
+  <!-- Lightbox Modal -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="modal-close">&times;</span>
+    <img id="modalImg" src="" alt="Enlarged screenshot" onclick="event.stopPropagation()">
+  </div>
+
+  <script>
+    function copyCode(id, btn) {
+      const el = document.getElementById(id);
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = "Copied!";
+        setTimeout(() => btn.innerText = orig, 2000);
+      });
+    }
+
+    function openModal(src) {
+      document.getElementById('modalImg').src = src;
+      document.getElementById('imageModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('imageModal').classList.remove('active');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
 </body>
 </html>
 EOF
