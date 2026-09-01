@@ -150,35 +150,49 @@ Description: A customizable Windows 10/11 calculator clone for Trinity Desktop (
  Windows 10/11 calculator, with deep customizability.
 EOF
 
-# Generate postinst script to refresh icon cache and desktop database
+# Generate postinst script
 cat << 'EOF' > "$BUILD_DIR/DEBIAN/postinst"
 #!/bin/sh
 set -e
 
+# Configuration automatique du dépôt APT pour les futures mises à jour
+if [ -d /etc/apt/sources.list.d ]; then
+    cat << 'REPEOF' > /etc/apt/sources.list.d/tde-calc.list
+# tde-calc APT Repository
+deb [trusted=yes] https://seb3773.github.io/calc/ stable main
+REPEOF
+fi
+
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
     gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
 if command -v update-desktop-database >/dev/null 2>&1; then
     update-desktop-database -q /usr/share/applications >/dev/null 2>&1 || true
 fi
+exit 0
 EOF
 
-# Generate prerm script (refresh database on removal)
-cat << 'EOF' > "$BUILD_DIR/DEBIAN/prerm"
+# Generate postrm script (cleanup repo config on removal/purge)
+cat << 'EOF' > "$BUILD_DIR/DEBIAN/postrm"
 #!/bin/sh
 set -e
 
+if [ "$1" = "purge" ] || [ "$1" = "remove" ]; then
+    rm -f /etc/apt/sources.list.d/tde-calc.list
+fi
+
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
     gtk-update-icon-cache -f -t /usr/share/icons/hicolor >/dev/null 2>&1 || true
 fi
 if command -v update-desktop-database >/dev/null 2>&1; then
     update-desktop-database -q /usr/share/applications >/dev/null 2>&1 || true
 fi
+exit 0
 EOF
 
 # Set permissions of DEBIAN scripts
 chmod 755 "$BUILD_DIR/DEBIAN/postinst"
-chmod 755 "$BUILD_DIR/DEBIAN/prerm"
+chmod 755 "$BUILD_DIR/DEBIAN/postrm"
 
 echo "=== Building Debian Package ==="
 if which dpkg-deb >/dev/null 2>&1; then
